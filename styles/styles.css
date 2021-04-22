@@ -5,7 +5,79 @@
   overscroll-behavior: none;
 }
 
+body {
+  color: #313131;
+  margin: 2rem;
+  padding: 1rem;
+}
+
 body header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-bottom: 1rem;
+}
+
+body header h1 {
+  font-size: 2.5rem;
+  font-family: "Fjalla One", sans-serif;
+}
+
+body header h2 {
+  font-family: "Open Sans", sans-serif;
+}
+
+body form input,
+body form textarea {
+  font-size: 1.3rem;
+  font-family: "Open Sans", sans-serif;
+  border: none;
+  text-decoration: underline;
+  resize: none;
+}
+
+body form label {
+  font-family: "Fjalla One", sans-serif;
+  font-size: 1.3rem;
+  padding: 0.1rem 0.5rem;
+}
+
+body form .form-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-line-pack: center;
+      align-content: center;
+}
+
+body form .form-container .form-input {
+  margin: 0.5rem auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: top;
+      -ms-flex-align: top;
+          align-items: top;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  padding: 0.5rem;
+}
+
+body form .form-container #qoute {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -18,11 +90,13 @@ body header {
           align-items: center;
 }
 
-body header h1 {
+body form .form-container #qoute h3 {
   font-family: "Fjalla One", sans-serif;
+  font-size: 1.3rem;
 }
 
-body header h2 {
+body form .form-container #qoute p {
   font-family: "Open Sans", sans-serif;
+  font-weight: lighter;
 }
 /*# sourceMappingURL=styles.css.map */
