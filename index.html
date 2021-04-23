@@ -25,14 +25,14 @@
     </header>
 
     <div class="planner">
+      <div id="start">START PLANNING</div>
       <form>
         <div class="form-container">
-          <div id="start">START PLANNING</div>
           <div class="form-input">
             <label for="goals">Write Goals:</label>
+            <!-- <input type="text" placeholder="Enter Your Goals.." /> -->
             <textarea
-              name="goals"
-              id=""
+              id="goal-input"
               cols="60"
               rows="5"
               placeholder="Enter Your Goals.."
@@ -43,35 +43,33 @@
             <p id="qoute-text">asdfasdfa , TOM</p>
           </div>
           <div class="form-input">
-            <label for="goals">Targets:</label>
+            <label for="target">Targets:</label>
             <textarea
-              name="targets"
-              id=""
+              id="target-input"
               cols="60"
               rows="5"
               placeholder="Enter Your Targets.."
             ></textarea>
           </div>
           <div class="form-input">
-            <label for="goals">Successes:</label>
+            <label for="successes">Successes:</label>
             <textarea
-              name="successes"
-              id=""
+              id="success-input"
               cols="60"
               rows="5"
               placeholder="Enter Your Successes.."
             ></textarea>
           </div>
           <div class="form-input">
-            <label for="goals">Failures:</label>
+            <label for="failure">Failures:</label>
             <textarea
-              name="failure"
-              id=""
+              id="failure-input"
               cols="60"
               rows="5"
               placeholder="Enter Your Failures.."
             ></textarea>
           </div>
+          <button type="submit" id="submit-button">Save Your Plan</button>
         </div>
       </form>
     </div>

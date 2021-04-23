@@ -9,6 +9,17 @@ $textColor: #313131;
   align-items: center;
 }
 
+@mixin btnDesign() {
+  margin: 0 auto;
+  text-align: center;
+  width: 20%;
+  font-family: "Fjalla One", sans-serif;
+  font-size: 1.1rem;
+  padding: 0.3rem;
+  border: 3px solid $textColor;
+  background-color: transparent;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -50,11 +61,8 @@ body {
   }
   .planner {
     #start {
-      font-family: "Fjalla One", sans-serif;
-      font-size: 1.1rem;
-      padding: 0.3rem;
-      border: 3px solid $textColor;
-      background-color: transparent;
+      @include btnDesign();
+      display: none;
     }
     form {
       input,
@@ -72,6 +80,7 @@ body {
       }
       .form-container {
         @include flexColCen();
+        // display: none;
         align-content: center;
 
         .form-input {
@@ -92,6 +101,9 @@ body {
             font-weight: lighter;
           }
         }
+      }
+      button {
+        @include btnDesign();
       }
     }
   }

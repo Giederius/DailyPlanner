@@ -81,11 +81,15 @@ body header .title-text h2 {
 }
 
 body .planner #start {
+  margin: 0 auto;
+  text-align: center;
+  width: 20%;
   font-family: "Fjalla One", sans-serif;
   font-size: 1.1rem;
   padding: 0.3rem;
   border: 3px solid #313131;
   background-color: transparent;
+  display: none;
 }
 
 body .planner form input,
@@ -152,5 +156,16 @@ body .planner form .form-container #qoute h3 {
 body .planner form .form-container #qoute p {
   font-family: "Open Sans", sans-serif;
   font-weight: lighter;
+}
+
+body .planner form button {
+  margin: 0 auto;
+  text-align: center;
+  width: 20%;
+  font-family: "Fjalla One", sans-serif;
+  font-size: 1.1rem;
+  padding: 0.3rem;
+  border: 3px solid #313131;
+  background-color: transparent;
 }
 /*# sourceMappingURL=styles.css.map */
