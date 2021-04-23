@@ -40,7 +40,7 @@ function addPlan(event) {
     failureInput.value
   );
   console.log(inputPlan);
-  saveLocal(inputPlan.value);
+  saveLocal(inputPlan);
 }
 
 // Date
@@ -68,5 +68,3 @@ function saveLocal(plan) {
 function previousDay() {}
 
 function nextDay() {}
-
-function localStorage(plan) {}
