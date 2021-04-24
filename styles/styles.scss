@@ -73,17 +73,20 @@ body {
         text-decoration: underline;
         resize: none;
       }
-      label {
+      label,
+      .label-from-saved {
         font-family: "Fjalla One", sans-serif;
         font-size: 1.3rem;
         padding: 0.1rem 0.5rem;
       }
+
       .form-container {
         @include flexColCen();
         // display: none;
         align-content: center;
 
-        .form-input {
+        .form-input,
+        .form-output {
           margin: 0.5rem auto;
           display: flex;
           align-items: top;
@@ -106,5 +109,8 @@ body {
         @include btnDesign();
       }
     }
+  }
+  .label-from-saved {
+    @include flexColCen();
   }
 }

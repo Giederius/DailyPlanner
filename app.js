@@ -2,6 +2,10 @@
 const date = document.querySelector("#date");
 const startBtn = document.querySelector("#start");
 const formCont = document.querySelector(".form-container");
+const yesterdayBtn = document.querySelector("#yesterday");
+const tomorrowBtn = document.querySelector("#tomorrow");
+
+const plannerContainer = document.querySelector(".planner");
 
 // Selectors - areatext fields
 const goalsInput = document.querySelector("#goal-input");
@@ -12,6 +16,8 @@ const submitBtn = document.querySelector("#submit-button");
 
 // Event Listeners
 submitBtn.addEventListener("click", addPlan);
+yesterdayBtn.addEventListener("click", previousDay);
+tomorrowBtn.addEventListener("click", nextDay);
 
 // startBtn.addEventListener("click", () => {
 //   formCont.style.display = "flex";
@@ -49,6 +55,8 @@ var dd = String(today.getDate()).padStart(2, "0");
 var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
 var yyyy = today.getFullYear();
 today = dd + "." + mm + "." + yyyy;
+var yesterday = dd - 1 + "." + mm + "." + yyyy;
+var tomorrow = dd + 1 + "." + mm + "." + yyyy;
 date.innerText = today; // to display the date
 // Date ends
 
@@ -65,6 +73,25 @@ function saveLocal(plan) {
   localStorage.setItem("plans", JSON.stringify(plans)); // saves latest plan to storage
 }
 
-function previousDay() {}
+function previousDay() {
+  formCont.style.display = "none";
+  // CHANGE THE DATE!
+
+  // create container where the text will come up
+  const plans = document.createElement("div");
+  plans.classList.add("saved-text-container");
+  plannerContainer.appendChild(plans);
+
+  // Creates container to hold label text and data got from local storage
+  const innerContainer = document.createElement("div");
+  innerContainer.classList.add("form-output");
+  plans.appendChild(innerContainer);
+
+  // creates h3 to hold "label" text
+  const labelText = document.createElement("h3");
+  labelText.classList.add("label-from-saved");
+  labelText.innerHTML = "Your goals were: ";
+  innerContainer.appendChild(labelText);
+}
 
 function nextDay() {}
