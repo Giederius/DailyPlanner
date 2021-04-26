@@ -92,6 +92,63 @@ function previousDay() {
   labelText.classList.add("label-from-saved");
   labelText.innerHTML = "Your goals were: ";
   innerContainer.appendChild(labelText);
+
+  // creates p to hold text input
+  const inputText = document.createElement("p");
+  inputText.classList.add("text-output");
+  inputText.innerHTML = "asd";
+  innerContainer.appendChild(inputText);
+
+  // Creates container to hold label text and data got from local storage
+  const innerContainer = document.createElement("div");
+  innerContainer.classList.add("form-output");
+  plans.appendChild(innerContainer);
+
+  // creates h3 to hold "label" text
+  const labelText = document.createElement("h3");
+  labelText.classList.add("label-from-saved");
+  labelText.innerHTML = "Your goals were: ";
+  innerContainer.appendChild(labelText);
+
+  // creates p to hold text input
+  const inputText = document.createElement("p");
+  inputText.classList.add("text-output");
+  inputText.innerHTML = "asd";
+  innerContainer.appendChild(inputText);
+
+  // Creates container to hold label text and data got from local storage
+  const innerContainer = document.createElement("div");
+  innerContainer.classList.add("form-output");
+  plans.appendChild(innerContainer);
+
+  // creates h3 to hold "label" text
+  const labelText = document.createElement("h3");
+  labelText.classList.add("label-from-saved");
+  labelText.innerHTML = "Your goals were: ";
+  innerContainer.appendChild(labelText);
+
+  // creates p to hold text input
+  const inputText = document.createElement("p");
+  inputText.classList.add("text-output");
+  inputText.innerHTML = "asd";
+  innerContainer.appendChild(inputText);
+
+  // Creates container to hold label text and data got from local storage
+  const innerContainer = document.createElement("div");
+  innerContainer.classList.add("form-output");
+  plans.appendChild(innerContainer);
+
+  // creates h3 to hold "label" text
+  const labelText = document.createElement("h3");
+  labelText.classList.add("label-from-saved");
+  labelText.innerHTML = "Your goals were: ";
+  innerContainer.appendChild(labelText);
+
+  // creates p to hold text input
+  const inputText = document.createElement("p");
+  inputText.classList.add("text-output");
+  inputText.innerHTML = "asd";
+  innerContainer.appendChild(inputText);
 }
 
 function nextDay() {}

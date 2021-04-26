@@ -73,8 +73,7 @@ body {
         text-decoration: underline;
         resize: none;
       }
-      label,
-      .label-from-saved {
+      label {
         font-family: "Fjalla One", sans-serif;
         font-size: 1.3rem;
         padding: 0.1rem 0.5rem;
@@ -85,8 +84,7 @@ body {
         // display: none;
         align-content: center;
 
-        .form-input,
-        .form-output {
+        .form-input {
           margin: 0.5rem auto;
           display: flex;
           align-items: top;
@@ -110,7 +108,25 @@ body {
       }
     }
   }
-  .label-from-saved {
-    @include flexColCen();
+  .saved-text-container {
+    display: flex;
+    .form-output {
+      display: flex;
+      flex-direction: row;
+      align-content: center;
+      margin: 0.5rem auto;
+      padding: 0.5rem;
+      .label-from-saved {
+        font-family: "Fjalla One", sans-serif;
+        font-size: 1.3rem;
+        padding: 0.1rem 0.5rem;
+      }
+      .text-output {
+        font-size: 1.3rem;
+        font-family: "Open Sans", sans-serif;
+        border: none;
+        text-decoration: underline;
+      }
+    }
   }
 }
