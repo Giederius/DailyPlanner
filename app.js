@@ -82,73 +82,86 @@ function previousDay() {
   plans.classList.add("saved-text-container");
   plannerContainer.appendChild(plans);
 
+  // GOALS CONTAINER
   // Creates container to hold label text and data got from local storage
-  const innerContainer = document.createElement("div");
-  innerContainer.classList.add("form-output");
-  plans.appendChild(innerContainer);
+  const goalsContainer = document.createElement("div");
+  goalsContainer.classList.add("form-output");
+  plans.appendChild(goalsContainer);
 
   // creates h3 to hold "label" text
-  const labelText = document.createElement("h3");
-  labelText.classList.add("label-from-saved");
-  labelText.innerHTML = "Your goals were: ";
-  innerContainer.appendChild(labelText);
+  const goalsText = document.createElement("h3");
+  goalsText.classList.add("label-from-saved");
+  goalsText.innerHTML = "Your Goals were: ";
+  goalsContainer.appendChild(goalsText);
 
   // creates p to hold text input
-  const inputText = document.createElement("p");
-  inputText.classList.add("text-output");
-  inputText.innerHTML = "asd";
-  innerContainer.appendChild(inputText);
+  const goalsOutput = document.createElement("p");
+  goalsOutput.classList.add("text-output");
+  goalsOutput.innerHTML = "asd";
+  goalsContainer.appendChild(goalsOutput);
+  // GOALS END
 
+  // TARGETS CONTAINER
   // Creates container to hold label text and data got from local storage
-  const innerContainer = document.createElement("div");
-  innerContainer.classList.add("form-output");
-  plans.appendChild(innerContainer);
+  const targetContainer = document.createElement("div");
+  targetContainer.classList.add("form-output");
+  plans.appendChild(targetContainer);
 
   // creates h3 to hold "label" text
-  const labelText = document.createElement("h3");
-  labelText.classList.add("label-from-saved");
-  labelText.innerHTML = "Your goals were: ";
-  innerContainer.appendChild(labelText);
+  const targetText = document.createElement("h3");
+  targetText.classList.add("label-from-saved");
+  targetText.innerHTML = "Your Targets were: ";
+  targetContainer.appendChild(targetText);
 
   // creates p to hold text input
-  const inputText = document.createElement("p");
-  inputText.classList.add("text-output");
-  inputText.innerHTML = "asd";
-  innerContainer.appendChild(inputText);
+  const targetOutput = document.createElement("p");
+  targetOutput.classList.add("text-output");
+  targetOutput.innerHTML = "asd";
+  targetContainer.appendChild(targetOutput);
+  // TARGETS END
 
+  // SUCCESSES CONTAINER
   // Creates container to hold label text and data got from local storage
-  const innerContainer = document.createElement("div");
-  innerContainer.classList.add("form-output");
-  plans.appendChild(innerContainer);
+  const successContainer = document.createElement("div");
+  successContainer.classList.add("form-output");
+  plans.appendChild(successContainer);
 
   // creates h3 to hold "label" text
-  const labelText = document.createElement("h3");
-  labelText.classList.add("label-from-saved");
-  labelText.innerHTML = "Your goals were: ";
-  innerContainer.appendChild(labelText);
+  const successText = document.createElement("h3");
+  successText.classList.add("label-from-saved");
+  successText.innerHTML = "Your Successes were: ";
+  successContainer.appendChild(successText);
 
   // creates p to hold text input
-  const inputText = document.createElement("p");
-  inputText.classList.add("text-output");
-  inputText.innerHTML = "asd";
-  innerContainer.appendChild(inputText);
+  const successOutput = document.createElement("p");
+  successOutput.classList.add("text-output");
+  successOutput.innerHTML = "asd";
+  successContainer.appendChild(successOutput);
+  // SUCCESS END
 
+  // FAILURES CONTAINER
   // Creates container to hold label text and data got from local storage
-  const innerContainer = document.createElement("div");
-  innerContainer.classList.add("form-output");
-  plans.appendChild(innerContainer);
+  const failuresContainer = document.createElement("div");
+  failuresContainer.classList.add("form-output");
+  plans.appendChild(failuresContainer);
 
   // creates h3 to hold "label" text
-  const labelText = document.createElement("h3");
-  labelText.classList.add("label-from-saved");
-  labelText.innerHTML = "Your goals were: ";
-  innerContainer.appendChild(labelText);
+  const failuresText = document.createElement("h3");
+  failuresText.classList.add("label-from-saved");
+  failuresText.innerHTML = "Your Failures were: ";
+  failuresContainer.appendChild(failuresText);
 
   // creates p to hold text input
-  const inputText = document.createElement("p");
-  inputText.classList.add("text-output");
-  inputText.innerHTML = "asd";
-  innerContainer.appendChild(inputText);
+  const failuresOutput = document.createElement("p");
+  failuresOutput.classList.add("text-output");
+  failuresOutput.innerHTML = "asd";
+  failuresContainer.appendChild(failuresOutput);
+  // FAILURES END
+
+  console.log(yesterday);
+  let yesterdaysPlan = JSON.parse(localStorage.getItem("plans"));
+  var yesterdaysIndex = yesterdaysPlan.length - 1;
+  console.log(yesterdaysPlan[yesterdaysIndex].date);
 }
 
 function nextDay() {}

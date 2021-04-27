@@ -110,6 +110,8 @@ body {
   }
   .saved-text-container {
     display: flex;
+    flex-direction: column;
+    padding: 3rem;
     .form-output {
       display: flex;
       flex-direction: row;
