@@ -55,6 +55,7 @@ var dd = String(today.getDate()).padStart(2, "0");
 var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
 var yyyy = today.getFullYear();
 today = dd + "." + mm + "." + yyyy;
+today = "26.04.2021";
 var yesterday = dd - 1 + "." + mm + "." + yyyy;
 var tomorrow = dd + 1 + "." + mm + "." + yyyy;
 date.innerText = today; // to display the date
@@ -69,12 +70,21 @@ function saveLocal(plan) {
   } else {
     plans = JSON.parse(localStorage.getItem("plans")); // returns plans that were saved in local storage
   }
-  plans.push(plan); // pushes latest plan
-  localStorage.setItem("plans", JSON.stringify(plans)); // saves latest plan to storage
+  // Checks if there's an input for today so there won't be any duplicates
+  if (plans.find((plans) => plans.date === today)) {
+    alert("You already set up today");
+  } else {
+    plans.push(plan); // pushes latest plan
+    localStorage.setItem("plans", JSON.stringify(plans)); // saves latest plan to storage
+  }
 }
 
 function previousDay() {
   formCont.style.display = "none";
+  // Getting yesterday's data from local storage
+  let planObject = JSON.parse(localStorage.getItem("plans"));
+  var yesterdaysPlan = planObject.find((plans) => plans.date === yesterday); //finds it through date
+  console.log(yesterdaysPlan);
   // CHANGE THE DATE!
 
   // create container where the text will come up
@@ -97,7 +107,7 @@ function previousDay() {
   // creates p to hold text input
   const goalsOutput = document.createElement("p");
   goalsOutput.classList.add("text-output");
-  goalsOutput.innerHTML = "asd";
+  goalsOutput.innerHTML = yesterdaysPlan.goals;
   goalsContainer.appendChild(goalsOutput);
   // GOALS END
 
@@ -116,7 +126,7 @@ function previousDay() {
   // creates p to hold text input
   const targetOutput = document.createElement("p");
   targetOutput.classList.add("text-output");
-  targetOutput.innerHTML = "asd";
+  targetOutput.innerHTML = yesterdaysPlan.targets;
   targetContainer.appendChild(targetOutput);
   // TARGETS END
 
@@ -135,7 +145,7 @@ function previousDay() {
   // creates p to hold text input
   const successOutput = document.createElement("p");
   successOutput.classList.add("text-output");
-  successOutput.innerHTML = "asd";
+  successOutput.innerHTML = yesterdaysPlan.successes;
   successContainer.appendChild(successOutput);
   // SUCCESS END
 
@@ -154,14 +164,11 @@ function previousDay() {
   // creates p to hold text input
   const failuresOutput = document.createElement("p");
   failuresOutput.classList.add("text-output");
-  failuresOutput.innerHTML = "asd";
+  failuresOutput.innerHTML = yesterdaysPlan.failures;
   failuresContainer.appendChild(failuresOutput);
   // FAILURES END
 
-  console.log(yesterday);
-  let yesterdaysPlan = JSON.parse(localStorage.getItem("plans"));
-  var yesterdaysIndex = yesterdaysPlan.length - 1;
-  console.log(yesterdaysPlan[yesterdaysIndex].date);
+  //
 }
 
 function nextDay() {}
