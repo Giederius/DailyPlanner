@@ -4,8 +4,10 @@ const startBtn = document.querySelector("#start");
 const formCont = document.querySelector(".form-container");
 const yesterdayBtn = document.querySelector("#yesterday");
 const tomorrowBtn = document.querySelector("#tomorrow");
-
 const plannerContainer = document.querySelector(".planner");
+
+// VARIABLES
+var stateTracker = 0; // on website open set to 0, yesterday subtracts 1, tomorrow adds 1
 
 // Selectors - areatext fields
 const goalsInput = document.querySelector("#goal-input");
@@ -25,6 +27,18 @@ tomorrowBtn.addEventListener("click", nextDay);
 // });
 
 // Functions
+
+// DUPLICATE DELETE
+function popFunc() {
+  let plans; // plan array, where objects will be saved
+  if (localStorage.getItem("plans") === null) {
+    plans = [];
+  } else {
+    plans = JSON.parse(localStorage.getItem("plans")); // returns plans that were saved in local storage
+  }
+  plans.pop(); // pushes latest plan
+  localStorage.setItem("plans", JSON.stringify(plans)); // saves latest plan to storage
+}
 
 // Object and constructor creation
 function Plan(planDate, planGoals, planTargets, planSuccesses, planFailures) {
@@ -55,7 +69,6 @@ var dd = String(today.getDate()).padStart(2, "0");
 var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
 var yyyy = today.getFullYear();
 today = dd + "." + mm + "." + yyyy;
-today = "26.04.2021";
 var yesterday = dd - 1 + "." + mm + "." + yyyy;
 var tomorrow = dd + 1 + "." + mm + "." + yyyy;
 date.innerText = today; // to display the date
@@ -73,6 +86,7 @@ function saveLocal(plan) {
   // Checks if there's an input for today so there won't be any duplicates
   if (plans.find((plans) => plans.date === today)) {
     alert("You already set up today");
+    plans.pop();
   } else {
     plans.push(plan); // pushes latest plan
     localStorage.setItem("plans", JSON.stringify(plans)); // saves latest plan to storage
@@ -81,11 +95,32 @@ function saveLocal(plan) {
 
 function previousDay() {
   formCont.style.display = "none";
-  // Getting yesterday's data from local storage
-  let planObject = JSON.parse(localStorage.getItem("plans"));
-  var yesterdaysPlan = planObject.find((plans) => plans.date === yesterday); //finds it through date
-  console.log(yesterdaysPlan);
-  // CHANGE THE DATE!
+  plannerContainer.textContent = "";
+  stateTracker = stateTracker - 1;
+  console.log();
+
+  if (stateTracker < -1) {
+    oldDay = dd - Math.abs(stateTracker) + "." + mm + "." + yyyy;
+    console.log(oldDay);
+    date.innerText = oldDay;
+    // Getting yesterday's data from local storage
+    let planObject = JSON.parse(localStorage.getItem("plans"));
+
+    // CHECK IF THERE's A VALUE if not throw error
+    if (planObject.find((plans) => plans.date === oldDay)) {
+      // If there's a value show it
+      var yesterdaysPlan = planObject.find((plans) => plans.date === oldDay); //finds it through date
+      console.log(yesterdaysPlan);
+    } else {
+      alert("No Plan for this day " + oldDay + "!");
+    }
+  } else {
+    date.innerText = yesterday;
+    // Getting yesterday's data from local storage
+    let planObject = JSON.parse(localStorage.getItem("plans"));
+    var yesterdaysPlan = planObject.find((plans) => plans.date === yesterday); //finds it through date
+    console.log(yesterdaysPlan);
+  }
 
   // create container where the text will come up
   const plans = document.createElement("div");
