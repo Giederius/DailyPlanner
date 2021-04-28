@@ -6,6 +6,7 @@ const yesterdayBtn = document.querySelector("#yesterday");
 const tomorrowBtn = document.querySelector("#tomorrow");
 const plannerContainer = document.querySelector(".planner");
 const qoute = document.querySelector("#qoute-text");
+const yesterdayText = document.querySelector("#yesterday-text");
 
 // VARIABLES
 var stateTracker = 0; // on website open set to 0, yesterday subtracts 1, tomorrow adds 1
@@ -121,22 +122,25 @@ function previousDay() {
   formCont.style.display = "none";
   plannerContainer.textContent = "";
   stateTracker = stateTracker - 1;
-  console.log();
+  yesterdayText.innerText = "PREVIOUS DAY";
 
   if (stateTracker < -1) {
     oldDay = dd - Math.abs(stateTracker) + "." + mm + "." + yyyy;
     console.log(oldDay);
     date.innerText = oldDay;
+
     // Getting yesterday's data from local storage
     let planObject = JSON.parse(localStorage.getItem("plans"));
-
+    yesterdayText.innerText = "PREVIOUS DAY";
     // CHECK IF THERE's A VALUE if not throw error
     if (planObject.find((plans) => plans.date === oldDay)) {
       // If there's a value show it
       var yesterdaysPlan = planObject.find((plans) => plans.date === oldDay); //finds it through date
       console.log(yesterdaysPlan);
+      elementCreation(yesterdaysPlan);
     } else {
       alert("No Plan for this day " + oldDay + "!");
+      // Stop the date going back and don't make the elements disappear
     }
   } else {
     date.innerText = yesterday;
@@ -144,8 +148,13 @@ function previousDay() {
     let planObject = JSON.parse(localStorage.getItem("plans"));
     var yesterdaysPlan = planObject.find((plans) => plans.date === yesterday); //finds it through date
     console.log(yesterdaysPlan);
+    elementCreation(yesterdaysPlan);
   }
+}
 
+function nextDay() {}
+
+function elementCreation(planToCreate) {
   // create container where the text will come up
   const plans = document.createElement("div");
   plans.classList.add("saved-text-container");
@@ -166,7 +175,7 @@ function previousDay() {
   // creates p to hold text input
   const goalsOutput = document.createElement("p");
   goalsOutput.classList.add("text-output");
-  goalsOutput.innerHTML = yesterdaysPlan.goals;
+  goalsOutput.innerHTML = planToCreate.goals;
   goalsContainer.appendChild(goalsOutput);
   // GOALS END
 
@@ -185,7 +194,7 @@ function previousDay() {
   // creates p to hold text input
   const targetOutput = document.createElement("p");
   targetOutput.classList.add("text-output");
-  targetOutput.innerHTML = yesterdaysPlan.targets;
+  targetOutput.innerHTML = planToCreate.targets;
   targetContainer.appendChild(targetOutput);
   // TARGETS END
 
@@ -204,7 +213,7 @@ function previousDay() {
   // creates p to hold text input
   const successOutput = document.createElement("p");
   successOutput.classList.add("text-output");
-  successOutput.innerHTML = yesterdaysPlan.successes;
+  successOutput.innerHTML = planToCreate.successes;
   successContainer.appendChild(successOutput);
   // SUCCESS END
 
@@ -223,9 +232,7 @@ function previousDay() {
   // creates p to hold text input
   const failuresOutput = document.createElement("p");
   failuresOutput.classList.add("text-output");
-  failuresOutput.innerHTML = yesterdaysPlan.failures;
+  failuresOutput.innerHTML = planToCreate.failures;
   failuresContainer.appendChild(failuresOutput);
   // FAILURES END
 }
-
-function nextDay() {}
