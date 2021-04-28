@@ -48,14 +48,27 @@ body {
         transform: rotate(90deg);
       }
     }
-    .title-text {
-      @include flexColCen();
-      h1 {
-        font-size: 2.5rem;
-        font-family: "Fjalla One", sans-serif;
+    .header-center {
+      .title-text {
+        @include flexColCen();
+        h1 {
+          font-size: 2.5rem;
+          font-family: "Fjalla One", sans-serif;
+        }
+        h2 {
+          font-family: "Open Sans", sans-serif;
+        }
       }
-      h2 {
-        font-family: "Open Sans", sans-serif;
+      .edit-save {
+        padding: 1rem 0.5rem;
+        display: flex;
+        button {
+          @include btnDesign();
+          width: 70px;
+        }
+        .vertical-line {
+          border-left: 3px solid $textColor;
+        }
       }
     }
   }

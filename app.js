@@ -1,15 +1,21 @@
-// Selectors
+// VARIABLES
+var stateTracker = 0; // on website open set to 0, yesterday subtracts 1, tomorrow adds 1
+
+// Selectors - text elements
 const date = document.querySelector("#date");
-const startBtn = document.querySelector("#start");
-const formCont = document.querySelector(".form-container");
-const yesterdayBtn = document.querySelector("#yesterday");
-const tomorrowBtn = document.querySelector("#tomorrow");
-const plannerContainer = document.querySelector(".planner");
 const qoute = document.querySelector("#qoute-text");
 const yesterdayText = document.querySelector("#yesterday-text");
 
-// VARIABLES
-var stateTracker = 0; // on website open set to 0, yesterday subtracts 1, tomorrow adds 1
+// Selectors - containers
+const formCont = document.querySelector(".form-container");
+const plannerContainer = document.querySelector(".planner");
+
+// Selectors - buttons
+const startBtn = document.querySelector("#start");
+const editBtn = document.querySelector("#edit");
+const saveBtn = document.querySelector("#save");
+const yesterdayBtn = document.querySelector("#yesterday");
+const tomorrowBtn = document.querySelector("#tomorrow");
 
 // Selectors - areatext fields
 const goalsInput = document.querySelector("#goal-input");
@@ -17,16 +23,21 @@ const targetInput = document.querySelector("#target-input");
 const successInput = document.querySelector("#success-input");
 const failureInput = document.querySelector("#failure-input");
 const submitBtn = document.querySelector("#submit-button");
+// SELECTORS END
 
 // Event Listeners
 submitBtn.addEventListener("click", addPlan);
 yesterdayBtn.addEventListener("click", previousDay);
 tomorrowBtn.addEventListener("click", nextDay);
+// editBtn.addEventListener("click");
+// saveBtn.addEventListener("click");
 
 // startBtn.addEventListener("click", () => {
 //   formCont.style.display = "flex";
 //   startBtn.style.display = "none";
 // });
+
+// EVENT LISTENERS END
 
 // Functions
 
@@ -35,7 +46,6 @@ function getQoute() {
   fetch("https://type.fit/api/quotes")
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
       var randNumber = Math.floor(Math.random() * (1644 - 1)) + 1;
 
       if (data[randNumber].author == null) {
@@ -118,6 +128,8 @@ function saveLocal(plan) {
   }
 }
 
+function editPlan() {}
+
 function previousDay() {
   formCont.style.display = "none";
   plannerContainer.textContent = "";
@@ -136,7 +148,9 @@ function previousDay() {
     if (planObject.find((plans) => plans.date === oldDay)) {
       // If there's a value show it
       var yesterdaysPlan = planObject.find((plans) => plans.date === oldDay); //finds it through date
-      console.log(yesterdaysPlan);
+      // finding index
+      var plansIndex = planObject.findIndex((plans) => plans.date === oldDay);
+      console.log(plansIndex);
       elementCreation(yesterdaysPlan);
     } else {
       alert("No Plan for this day " + oldDay + "!");
@@ -147,7 +161,9 @@ function previousDay() {
     // Getting yesterday's data from local storage
     let planObject = JSON.parse(localStorage.getItem("plans"));
     var yesterdaysPlan = planObject.find((plans) => plans.date === yesterday); //finds it through date
+    var plansIndex = planObject.findIndex((plans) => plans.date === yesterday); // finds index
     console.log(yesterdaysPlan);
+    console.log(plansIndex);
     elementCreation(yesterdaysPlan);
   }
 }
@@ -176,6 +192,93 @@ function elementCreation(planToCreate) {
   const goalsOutput = document.createElement("p");
   goalsOutput.classList.add("text-output");
   goalsOutput.innerHTML = planToCreate.goals;
+  goalsContainer.appendChild(goalsOutput);
+  // GOALS END
+
+  // TARGETS CONTAINER
+  // Creates container to hold label text and data got from local storage
+  const targetContainer = document.createElement("div");
+  targetContainer.classList.add("form-output");
+  plans.appendChild(targetContainer);
+
+  // creates h3 to hold "label" text
+  const targetText = document.createElement("h3");
+  targetText.classList.add("label-from-saved");
+  targetText.innerHTML = "Your Targets were: ";
+  targetContainer.appendChild(targetText);
+
+  // creates p to hold text input
+  const targetOutput = document.createElement("p");
+  targetOutput.classList.add("text-output");
+  targetOutput.innerHTML = planToCreate.targets;
+  targetContainer.appendChild(targetOutput);
+  // TARGETS END
+
+  // SUCCESSES CONTAINER
+  // Creates container to hold label text and data got from local storage
+  const successContainer = document.createElement("div");
+  successContainer.classList.add("form-output");
+  plans.appendChild(successContainer);
+
+  // creates h3 to hold "label" text
+  const successText = document.createElement("h3");
+  successText.classList.add("label-from-saved");
+  successText.innerHTML = "Your Successes were: ";
+  successContainer.appendChild(successText);
+
+  // creates p to hold text input
+  const successOutput = document.createElement("p");
+  successOutput.classList.add("text-output");
+  successOutput.innerHTML = planToCreate.successes;
+  successContainer.appendChild(successOutput);
+  // SUCCESS END
+
+  // FAILURES CONTAINER
+  // Creates container to hold label text and data got from local storage
+  const failuresContainer = document.createElement("div");
+  failuresContainer.classList.add("form-output");
+  plans.appendChild(failuresContainer);
+
+  // creates h3 to hold "label" text
+  const failuresText = document.createElement("h3");
+  failuresText.classList.add("label-from-saved");
+  failuresText.innerHTML = "Your Failures were: ";
+  failuresContainer.appendChild(failuresText);
+
+  // creates p to hold text input
+  const failuresOutput = document.createElement("p");
+  failuresOutput.classList.add("text-output");
+  failuresOutput.innerHTML = planToCreate.failures;
+  failuresContainer.appendChild(failuresOutput);
+  // FAILURES END
+}
+
+function editElementCreation(planToEdit) {
+  // creates form
+  const forma = document.createElement("form");
+  plannerContainer.appendChild(forma);
+
+  // create container where the text will come up
+  const plans = document.createElement("div");
+  plans.classList.add("form-container");
+  forma.appendChild(plans);
+
+  // GOALS CONTAINER
+  // Creates container to hold label text and data got from local storage
+  const goalsContainer = document.createElement("div");
+  goalsContainer.classList.add("form-input");
+  plans.appendChild(goalsContainer);
+
+  // creates h3 to hold "label" text
+  const goalsText = document.createElement("h3");
+  goalsText.classList.add("label-from-saved");
+  goalsText.innerHTML = "Your Goals were: ";
+  goalsContainer.appendChild(goalsText);
+
+  // creates textarea to hold text input
+  const goalsOutput = document.createElement("textarea");
+  goalsOutput.id = "goal-input";
+  goalsOutput.setAttribute("placeholder", planToCreate.goals);
   goalsContainer.appendChild(goalsOutput);
   // GOALS END
 
