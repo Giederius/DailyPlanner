@@ -5,6 +5,7 @@ const formCont = document.querySelector(".form-container");
 const yesterdayBtn = document.querySelector("#yesterday");
 const tomorrowBtn = document.querySelector("#tomorrow");
 const plannerContainer = document.querySelector(".planner");
+const qoute = document.querySelector("#qoute-text");
 
 // VARIABLES
 var stateTracker = 0; // on website open set to 0, yesterday subtracts 1, tomorrow adds 1
@@ -27,6 +28,29 @@ tomorrowBtn.addEventListener("click", nextDay);
 // });
 
 // Functions
+
+// QOUTE API START
+function getQoute() {
+  fetch("https://type.fit/api/quotes")
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      var randNumber = Math.floor(Math.random() * (1644 - 1)) + 1;
+
+      if (data[randNumber].author == null) {
+        var savedQoute = '"' + data[randNumber].text + '"';
+        qoute.innerText = savedQoute;
+      } else {
+        var savedQoute =
+          '"' + data[randNumber].text + '"' + " " + data[randNumber].author;
+        qoute.innerText = savedQoute;
+      }
+    });
+}
+
+getQoute();
+
+// QOUTE API END
 
 // DUPLICATE DELETE
 function popFunc() {
@@ -202,8 +226,6 @@ function previousDay() {
   failuresOutput.innerHTML = yesterdaysPlan.failures;
   failuresContainer.appendChild(failuresOutput);
   // FAILURES END
-
-  //
 }
 
 function nextDay() {}
