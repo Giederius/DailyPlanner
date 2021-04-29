@@ -124,7 +124,8 @@ body .planner form textarea {
   resize: none;
 }
 
-body .planner form label {
+body .planner form label,
+body .planner form h3 {
   font-family: "Fjalla One", sans-serif;
   font-size: 1.3rem;
   padding: 0.1rem 0.5rem;

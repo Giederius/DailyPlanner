@@ -29,7 +29,7 @@ const submitBtn = document.querySelector("#submit-button");
 submitBtn.addEventListener("click", addPlan);
 yesterdayBtn.addEventListener("click", previousDay);
 tomorrowBtn.addEventListener("click", nextDay);
-// editBtn.addEventListener("click");
+editBtn.addEventListener("click", editPlan);
 // saveBtn.addEventListener("click");
 
 // startBtn.addEventListener("click", () => {
@@ -128,7 +128,21 @@ function saveLocal(plan) {
   }
 }
 
-function editPlan() {}
+function editPlan() {
+  plannerContainer.textContent = "";
+  // gets the plan
+  let planObject = JSON.parse(localStorage.getItem("plans"));
+  // gets the index
+  if (stateTracker == 0) {
+    var plansIndex = planObject.findIndex((plans) => plans.date === today);
+  } else if (stateTracker == -1) {
+    var plansIndex = planObject.findIndex((plans) => plans.date === yesterday);
+  } else if (stateTracker < -1) {
+    var plansIndex = planObject.findIndex((plans) => plans.date === oldDay);
+  }
+
+  editElementCreation(planObject, plansIndex);
+}
 
 function previousDay() {
   formCont.style.display = "none";
@@ -138,7 +152,6 @@ function previousDay() {
 
   if (stateTracker < -1) {
     oldDay = dd - Math.abs(stateTracker) + "." + mm + "." + yyyy;
-    console.log(oldDay);
     date.innerText = oldDay;
 
     // Getting yesterday's data from local storage
@@ -150,7 +163,6 @@ function previousDay() {
       var yesterdaysPlan = planObject.find((plans) => plans.date === oldDay); //finds it through date
       // finding index
       var plansIndex = planObject.findIndex((plans) => plans.date === oldDay);
-      console.log(plansIndex);
       elementCreation(yesterdaysPlan);
     } else {
       alert("No Plan for this day " + oldDay + "!");
@@ -162,8 +174,6 @@ function previousDay() {
     let planObject = JSON.parse(localStorage.getItem("plans"));
     var yesterdaysPlan = planObject.find((plans) => plans.date === yesterday); //finds it through date
     var plansIndex = planObject.findIndex((plans) => plans.date === yesterday); // finds index
-    console.log(yesterdaysPlan);
-    console.log(plansIndex);
     elementCreation(yesterdaysPlan);
   }
 }
@@ -253,7 +263,7 @@ function elementCreation(planToCreate) {
   // FAILURES END
 }
 
-function editElementCreation(planToEdit) {
+function editElementCreation(planToCreate, plansIndex) {
   // creates form
   const forma = document.createElement("form");
   plannerContainer.appendChild(forma);
@@ -278,14 +288,16 @@ function editElementCreation(planToEdit) {
   // creates textarea to hold text input
   const goalsOutput = document.createElement("textarea");
   goalsOutput.id = "goal-input";
-  goalsOutput.setAttribute("placeholder", planToCreate.goals);
+  goalsOutput.value = planToCreate[plansIndex].goals;
+  goalsOutput.setAttribute("cols", "60");
+  goalsOutput.setAttribute("rows", "5");
   goalsContainer.appendChild(goalsOutput);
   // GOALS END
 
   // TARGETS CONTAINER
   // Creates container to hold label text and data got from local storage
   const targetContainer = document.createElement("div");
-  targetContainer.classList.add("form-output");
+  targetContainer.classList.add("form-input");
   plans.appendChild(targetContainer);
 
   // creates h3 to hold "label" text
@@ -295,16 +307,18 @@ function editElementCreation(planToEdit) {
   targetContainer.appendChild(targetText);
 
   // creates p to hold text input
-  const targetOutput = document.createElement("p");
+  const targetOutput = document.createElement("textarea");
   targetOutput.classList.add("text-output");
-  targetOutput.innerHTML = planToCreate.targets;
+  targetOutput.value = planToCreate[plansIndex].targets;
+  targetOutput.setAttribute("cols", "60");
+  targetOutput.setAttribute("rows", "5");
   targetContainer.appendChild(targetOutput);
   // TARGETS END
 
   // SUCCESSES CONTAINER
   // Creates container to hold label text and data got from local storage
   const successContainer = document.createElement("div");
-  successContainer.classList.add("form-output");
+  successContainer.classList.add("form-input");
   plans.appendChild(successContainer);
 
   // creates h3 to hold "label" text
@@ -314,16 +328,18 @@ function editElementCreation(planToEdit) {
   successContainer.appendChild(successText);
 
   // creates p to hold text input
-  const successOutput = document.createElement("p");
+  const successOutput = document.createElement("textarea");
   successOutput.classList.add("text-output");
-  successOutput.innerHTML = planToCreate.successes;
+  successOutput.value = planToCreate[plansIndex].successes;
+  successOutput.setAttribute("cols", "60");
+  successOutput.setAttribute("rows", "5");
   successContainer.appendChild(successOutput);
   // SUCCESS END
 
   // FAILURES CONTAINER
   // Creates container to hold label text and data got from local storage
   const failuresContainer = document.createElement("div");
-  failuresContainer.classList.add("form-output");
+  failuresContainer.classList.add("form-input");
   plans.appendChild(failuresContainer);
 
   // creates h3 to hold "label" text
@@ -333,9 +349,11 @@ function editElementCreation(planToEdit) {
   failuresContainer.appendChild(failuresText);
 
   // creates p to hold text input
-  const failuresOutput = document.createElement("p");
+  const failuresOutput = document.createElement("textarea");
   failuresOutput.classList.add("text-output");
-  failuresOutput.innerHTML = planToCreate.failures;
+  failuresOutput.value = planToCreate[plansIndex].failures;
+  failuresOutput.setAttribute("cols", "60");
+  failuresOutput.setAttribute("rows", "5");
   failuresContainer.appendChild(failuresOutput);
   // FAILURES END
 }
