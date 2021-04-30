@@ -1,5 +1,6 @@
 // VARIABLES
 var stateTracker = 0; // on website open set to 0, yesterday subtracts 1, tomorrow adds 1
+var editStateTracker = 0; // to edit the inputs it has to be one. which means that the edit button was pressed
 
 // Selectors - text elements
 const date = document.querySelector("#date");
@@ -13,16 +14,17 @@ const plannerContainer = document.querySelector(".planner");
 // Selectors - buttons
 const startBtn = document.querySelector("#start");
 const editBtn = document.querySelector("#edit");
-const saveBtn = document.querySelector("#save");
+const saveEditBtn = document.querySelector("#save");
 const yesterdayBtn = document.querySelector("#yesterday");
 const tomorrowBtn = document.querySelector("#tomorrow");
+const submitBtn = document.querySelector("#submit-button");
 
 // Selectors - areatext fields
 const goalsInput = document.querySelector("#goal-input");
 const targetInput = document.querySelector("#target-input");
 const successInput = document.querySelector("#success-input");
 const failureInput = document.querySelector("#failure-input");
-const submitBtn = document.querySelector("#submit-button");
+
 // SELECTORS END
 
 // Event Listeners
@@ -30,7 +32,7 @@ submitBtn.addEventListener("click", addPlan);
 yesterdayBtn.addEventListener("click", previousDay);
 tomorrowBtn.addEventListener("click", nextDay);
 editBtn.addEventListener("click", editPlan);
-// saveBtn.addEventListener("click");
+saveEditBtn.addEventListener("click", saveEditedPlan);
 
 // startBtn.addEventListener("click", () => {
 //   formCont.style.display = "flex";
@@ -129,6 +131,7 @@ function saveLocal(plan) {
 }
 
 function editPlan() {
+  editStateTracker = 1; // to track that the edit button was pressed
   plannerContainer.textContent = "";
   // gets the plan
   let planObject = JSON.parse(localStorage.getItem("plans"));
@@ -142,6 +145,22 @@ function editPlan() {
   }
 
   editElementCreation(planObject, plansIndex);
+}
+
+function saveEditedPlan(event) {
+  if (editStateTracker === 1) {
+    event.preventDefault;
+    var editedPlan = new Plan(
+      today,
+      goalsInput.value,
+      targetInput.value,
+      successInput.value,
+      failureInput.value
+    );
+    console.log(editedPlan);
+  } else {
+    alert("You need to edit first to save the edited plan!");
+  }
 }
 
 function previousDay() {
@@ -288,6 +307,7 @@ function editElementCreation(planToCreate, plansIndex) {
   // creates textarea to hold text input
   const goalsOutput = document.createElement("textarea");
   goalsOutput.id = "goal-input";
+  goalsOutput.classList.add("text-output");
   goalsOutput.value = planToCreate[plansIndex].goals;
   goalsOutput.setAttribute("cols", "60");
   goalsOutput.setAttribute("rows", "5");
@@ -308,6 +328,7 @@ function editElementCreation(planToCreate, plansIndex) {
 
   // creates p to hold text input
   const targetOutput = document.createElement("textarea");
+  targetOutput.id = "target-input";
   targetOutput.classList.add("text-output");
   targetOutput.value = planToCreate[plansIndex].targets;
   targetOutput.setAttribute("cols", "60");
@@ -329,6 +350,7 @@ function editElementCreation(planToCreate, plansIndex) {
 
   // creates p to hold text input
   const successOutput = document.createElement("textarea");
+  successOutput.id = "success-input";
   successOutput.classList.add("text-output");
   successOutput.value = planToCreate[plansIndex].successes;
   successOutput.setAttribute("cols", "60");
@@ -350,10 +372,18 @@ function editElementCreation(planToCreate, plansIndex) {
 
   // creates p to hold text input
   const failuresOutput = document.createElement("textarea");
+  failuresOutput.id = "failure-input";
   failuresOutput.classList.add("text-output");
   failuresOutput.value = planToCreate[plansIndex].failures;
   failuresOutput.setAttribute("cols", "60");
   failuresOutput.setAttribute("rows", "5");
   failuresContainer.appendChild(failuresOutput);
   // FAILURES END
+
+  // creates a submit btn
+  const editSubmitBtn = document.createElement("button");
+  editSubmitBtn.id = "save";
+  editSubmitBtn.type = "submit";
+  editSubmitBtn.innerText = "SAVE EDIT";
+  forma.appendChild(editSubmitBtn);
 }
