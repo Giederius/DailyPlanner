@@ -25,6 +25,8 @@ const targetInput = document.querySelector("#target-input");
 const successInput = document.querySelector("#success-input");
 const failureInput = document.querySelector("#failure-input");
 
+const editedPlanInput = document.getElementsByName("edit-input");
+
 // SELECTORS END
 
 // Event Listeners
@@ -143,21 +145,36 @@ function editPlan() {
   } else if (stateTracker < -1) {
     var plansIndex = planObject.findIndex((plans) => plans.date === oldDay);
   }
-
   editElementCreation(planObject, plansIndex);
 }
 
 function saveEditedPlan(event) {
+  event.preventDefault();
   if (editStateTracker === 1) {
-    event.preventDefault;
     var editedPlan = new Plan(
       today,
-      goalsInput.value,
-      targetInput.value,
-      successInput.value,
-      failureInput.value
+      editedPlanInput[0].value,
+      editedPlanInput[1].value,
+      editedPlanInput[2].value,
+      editedPlanInput[3].value
     );
+
+    planObject = JSON.parse(localStorage.getItem("plans"));
+    // gets the index
+    if (stateTracker == 0) {
+      var plansIndex = planObject.findIndex((plans) => plans.date === today);
+    } else if (stateTracker == -1) {
+      var plansIndex = planObject.findIndex(
+        (plans) => plans.date === yesterday
+      );
+    } else if (stateTracker < -1) {
+      var plansIndex = planObject.findIndex((plans) => plans.date === oldDay);
+    }
+    planObject.splice(plansIndex, 1, editedPlan); // to remove the edited element and re-enter it
+
+    console.log(planObject);
     console.log(editedPlan);
+    console.log(plansIndex);
   } else {
     alert("You need to edit first to save the edited plan!");
   }
@@ -245,7 +262,8 @@ function elementCreation(planToCreate) {
 
   // SUCCESSES CONTAINER
   // Creates container to hold label text and data got from local storage
-  const successContainer = document.createElement("div");
+  const successContainer = document.create;
+  Element("div");
   successContainer.classList.add("form-output");
   plans.appendChild(successContainer);
 
@@ -306,7 +324,7 @@ function editElementCreation(planToCreate, plansIndex) {
 
   // creates textarea to hold text input
   const goalsOutput = document.createElement("textarea");
-  goalsOutput.id = "goal-input";
+  goalsOutput.name = "edit-input";
   goalsOutput.classList.add("text-output");
   goalsOutput.value = planToCreate[plansIndex].goals;
   goalsOutput.setAttribute("cols", "60");
@@ -329,6 +347,7 @@ function editElementCreation(planToCreate, plansIndex) {
   // creates p to hold text input
   const targetOutput = document.createElement("textarea");
   targetOutput.id = "target-input";
+  targetOutput.name = "edit-input";
   targetOutput.classList.add("text-output");
   targetOutput.value = planToCreate[plansIndex].targets;
   targetOutput.setAttribute("cols", "60");
@@ -351,6 +370,7 @@ function editElementCreation(planToCreate, plansIndex) {
   // creates p to hold text input
   const successOutput = document.createElement("textarea");
   successOutput.id = "success-input";
+  successOutput.name = "edit-input";
   successOutput.classList.add("text-output");
   successOutput.value = planToCreate[plansIndex].successes;
   successOutput.setAttribute("cols", "60");
@@ -373,17 +393,11 @@ function editElementCreation(planToCreate, plansIndex) {
   // creates p to hold text input
   const failuresOutput = document.createElement("textarea");
   failuresOutput.id = "failure-input";
+  failuresOutput.name = "edit-input";
   failuresOutput.classList.add("text-output");
   failuresOutput.value = planToCreate[plansIndex].failures;
   failuresOutput.setAttribute("cols", "60");
   failuresOutput.setAttribute("rows", "5");
   failuresContainer.appendChild(failuresOutput);
   // FAILURES END
-
-  // creates a submit btn
-  const editSubmitBtn = document.createElement("button");
-  editSubmitBtn.id = "save";
-  editSubmitBtn.type = "submit";
-  editSubmitBtn.innerText = "SAVE EDIT";
-  forma.appendChild(editSubmitBtn);
 }
