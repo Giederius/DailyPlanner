@@ -80,12 +80,14 @@ function popFunc() {
 }
 
 // Object and constructor creation
-function Plan(planDate, planGoals, planTargets, planSuccesses, planFailures) {
-  this.date = planDate;
-  this.goals = planGoals;
-  this.targets = planTargets;
-  this.successes = planSuccesses;
-  this.failures = planFailures;
+class Plan {
+  constructor(planDate, planGoals, planTargets, planSuccesses, planFailures) {
+    this.date = planDate;
+    this.goals = planGoals;
+    this.targets = planTargets;
+    this.successes = planSuccesses;
+    this.failures = planFailures;
+  }
 }
 
 // Save plan
@@ -150,13 +152,26 @@ function editPlan() {
 
 function saveEditedPlan(event) {
   event.preventDefault();
+  if (stateTracker == 0) {
+    editDay = today;
+  } else if (stateTracker == -1) {
+    editDay = yesterday;
+  } else if (stateTracker < -1) {
+    editDay = oldDay;
+  }
+
+  goalsInput.value = editedPlanInput[0].value;
+  targetInput.value = editedPlanInput[1].value;
+  successInput.value = editedPlanInput[2].value;
+  failureInput.value = editedPlanInput[3].value;
+
   if (editStateTracker === 1) {
     var editedPlan = new Plan(
-      today,
-      editedPlanInput[0].value,
-      editedPlanInput[1].value,
-      editedPlanInput[2].value,
-      editedPlanInput[3].value
+      editDay,
+      goalsInput.value,
+      targetInput.value,
+      successInput.value,
+      failureInput.value
     );
 
     planObject = JSON.parse(localStorage.getItem("plans"));
@@ -171,7 +186,7 @@ function saveEditedPlan(event) {
       var plansIndex = planObject.findIndex((plans) => plans.date === oldDay);
     }
     planObject.splice(plansIndex, 1, editedPlan); // to remove the edited element and re-enter it
-
+    localStorage.setItem("plans", JSON.stringify(planObject));
     console.log(planObject);
     console.log(editedPlan);
     console.log(plansIndex);
@@ -185,7 +200,7 @@ function previousDay() {
   plannerContainer.textContent = "";
   stateTracker = stateTracker - 1;
   yesterdayText.innerText = "PREVIOUS DAY";
-
+  yesterday = "0" + yesterday;
   if (stateTracker < -1) {
     oldDay = dd - Math.abs(stateTracker) + "." + mm + "." + yyyy;
     date.innerText = oldDay;
@@ -208,8 +223,10 @@ function previousDay() {
     date.innerText = yesterday;
     // Getting yesterday's data from local storage
     let planObject = JSON.parse(localStorage.getItem("plans"));
+    console.log(planObject);
     var yesterdaysPlan = planObject.find((plans) => plans.date === yesterday); //finds it through date
     var plansIndex = planObject.findIndex((plans) => plans.date === yesterday); // finds index
+    console.log(yesterdaysPlan);
     elementCreation(yesterdaysPlan);
   }
 }
@@ -262,8 +279,7 @@ function elementCreation(planToCreate) {
 
   // SUCCESSES CONTAINER
   // Creates container to hold label text and data got from local storage
-  const successContainer = document.create;
-  Element("div");
+  const successContainer = document.createElement("div");
   successContainer.classList.add("form-output");
   plans.appendChild(successContainer);
 
