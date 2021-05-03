@@ -45,6 +45,26 @@ saveEditBtn.addEventListener("click", saveEditedPlan);
 
 // Functions
 
+// Date
+function getFormattedDate(date) {
+  let year = date.getFullYear();
+  let month = (1 + date.getMonth()).toString().padStart(2, "0");
+  let day = date.getDate().toString().padStart(2, "0");
+
+  return day + "." + month + "." + year;
+}
+
+var today = new Date();
+today = getFormattedDate(today).toString();
+var tomorrow = new Date();
+var yesterday = new Date();
+tomorrow.setDate(tomorrow.getDay() + 3).toString();
+tomorrow = getFormattedDate(tomorrow);
+yesterday.setDate(yesterday.getDay() + 1).toString();
+yesterday = getFormattedDate(yesterday);
+date.innerText = today; // to display the date
+// Date ends
+
 // QOUTE API START
 function getQoute() {
   fetch("https://type.fit/api/quotes")
@@ -103,17 +123,6 @@ function addPlan(event) {
   console.log(inputPlan);
   saveLocal(inputPlan);
 }
-
-// Date
-var today = new Date();
-var dd = String(today.getDate()).padStart(2, "0");
-var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
-var yyyy = today.getFullYear();
-today = dd + "." + mm + "." + yyyy;
-var yesterday = dd - 1 + "." + mm + "." + yyyy;
-var tomorrow = dd + 1 + "." + mm + "." + yyyy;
-date.innerText = today; // to display the date
-// Date ends
 
 // Saving to LOCAL STORAGE
 function saveLocal(plan) {
@@ -200,9 +209,12 @@ function previousDay() {
   plannerContainer.textContent = "";
   stateTracker = stateTracker - 1;
   yesterdayText.innerText = "PREVIOUS DAY";
-  yesterday = "0" + yesterday;
+  // yesterday = "0" + yesterday;
   if (stateTracker < -1) {
-    oldDay = dd - Math.abs(stateTracker) + "." + mm + "." + yyyy;
+    var oldDay = new Date();
+    oldDay.setDate(oldDay.getDay() - Math.abs(stateTracker + 2)).toString();
+    //  dd - Math.abs(stateTracker) + "." + mm + "." + yyyy;
+    oldDay = getFormattedDate(oldDay);
     date.innerText = oldDay;
 
     // Getting yesterday's data from local storage
