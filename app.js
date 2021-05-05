@@ -148,14 +148,20 @@ function editPlan() {
   plannerContainer.textContent = "";
   // gets the plan
   let planObject = JSON.parse(localStorage.getItem("plans"));
+
   // gets the index
   if (stateTracker == 0) {
     var plansIndex = planObject.findIndex((plans) => plans.date === today);
   } else if (stateTracker == -1) {
     var plansIndex = planObject.findIndex((plans) => plans.date === yesterday);
   } else if (stateTracker < -1) {
+    var oldDay = new Date();
+    oldDay.setDate(oldDay.getDay() - Math.abs(stateTracker + 2)).toString();
+    oldDay = getFormattedDate(oldDay);
+
     var plansIndex = planObject.findIndex((plans) => plans.date === oldDay);
   }
+
   editElementCreation(planObject, plansIndex);
 }
 
