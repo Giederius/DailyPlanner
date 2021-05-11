@@ -8,8 +8,8 @@ const qoute = document.querySelector("#qoute-text");
 const yesterdayText = document.querySelector("#yesterday-text");
 
 // Selectors - containers
-const formCont = document.querySelector(".form-container");
 const plannerContainer = document.querySelector(".planner");
+const formCont = document.querySelector(".form-container");
 
 // Selectors - buttons
 const startBtn = document.querySelector("#start");
@@ -26,6 +26,8 @@ const successInput = document.querySelector("#success-input");
 const failureInput = document.querySelector("#failure-input");
 
 const editedPlanInput = document.getElementsByName("edit-input");
+// selecting body
+// var originalDOM = document.body.innerHTML;
 
 // SELECTORS END
 
@@ -34,7 +36,7 @@ submitBtn.addEventListener("click", addPlan);
 yesterdayBtn.addEventListener("click", previousDay);
 tomorrowBtn.addEventListener("click", nextDay);
 editBtn.addEventListener("click", editPlan);
-saveEditBtn.addEventListener("click", saveEditedPlan);
+saveEditBtn.addEventListener("click ", saveEditedPlan);
 
 // startBtn.addEventListener("click", () => {
 //   formCont.style.display = "flex";
@@ -55,15 +57,27 @@ function getFormattedDate(date) {
 }
 
 var today = new Date();
-today = getFormattedDate(today).toString();
 var tomorrow = new Date();
-var yesterday = new Date();
-tomorrow.setDate(tomorrow.getDay() + 3).toString();
+tomorrow.setDate(tomorrow.getDay() + 1);
 tomorrow = getFormattedDate(tomorrow);
-yesterday.setDate(yesterday.getDay() + 1).toString();
+
+var yesterday = new Date();
+
+yesterday.setDate(yesterday.getDate() - 1); //+1 veike
 yesterday = getFormattedDate(yesterday);
+today = getFormattedDate(today);
 date.innerText = today; // to display the date
 // Date ends
+
+function getOldDay() {
+  var oldDay = new Date();
+  console.log(oldDay);
+  console.log(stateTracker);
+  oldDay.setDate(oldDay.getDate() - Math.abs(stateTracker)).toString();
+  console.log(oldDay);
+  oldDay = getFormattedDate(oldDay);
+  return oldDay;
+}
 
 // QOUTE API START
 function getQoute() {
@@ -114,7 +128,7 @@ class Plan {
 function addPlan(event) {
   event.preventDefault();
   var inputPlan = new Plan(
-    today,
+    date.innerText,
     goalsInput.value,
     targetInput.value,
     successInput.value,
@@ -134,7 +148,7 @@ function saveLocal(plan) {
     plans = JSON.parse(localStorage.getItem("plans")); // returns plans that were saved in local storage
   }
   // Checks if there's an input for today so there won't be any duplicates
-  if (plans.find((plans) => plans.date === today)) {
+  if (plans.find((plans) => plans.date === date.innerText)) {
     alert("You already set up today");
     plans.pop();
   } else {
@@ -155,9 +169,7 @@ function editPlan() {
   } else if (stateTracker == -1) {
     var plansIndex = planObject.findIndex((plans) => plans.date === yesterday);
   } else if (stateTracker < -1) {
-    var oldDay = new Date();
-    oldDay.setDate(oldDay.getDay() - Math.abs(stateTracker + 2)).toString();
-    oldDay = getFormattedDate(oldDay);
+    oldDay = getOldDay();
 
     var plansIndex = planObject.findIndex((plans) => plans.date === oldDay);
   }
@@ -172,7 +184,7 @@ function saveEditedPlan(event) {
   } else if (stateTracker == -1) {
     editDay = yesterday;
   } else if (stateTracker < -1) {
-    editDay = oldDay;
+    editDay = getOldDay();
   }
 
   goalsInput.value = editedPlanInput[0].value;
@@ -211,18 +223,13 @@ function saveEditedPlan(event) {
 }
 
 function previousDay() {
-  formCont.style.display = "none";
-  plannerContainer.textContent = "";
   stateTracker = stateTracker - 1;
   yesterdayText.innerText = "PREVIOUS DAY";
-  // yesterday = "0" + yesterday;
-  if (stateTracker < -1) {
-    var oldDay = new Date();
-    oldDay.setDate(oldDay.getDay() - Math.abs(stateTracker + 2)).toString();
-    //  dd - Math.abs(stateTracker) + "." + mm + "." + yyyy;
-    oldDay = getFormattedDate(oldDay);
-    date.innerText = oldDay;
 
+  if (stateTracker < -1) {
+    oldDay = getOldDay();
+    date.innerText = oldDay;
+    console.log(oldDay);
     // Getting yesterday's data from local storage
     let planObject = JSON.parse(localStorage.getItem("plans"));
     yesterdayText.innerText = "PREVIOUS DAY";
@@ -232,24 +239,40 @@ function previousDay() {
       var yesterdaysPlan = planObject.find((plans) => plans.date === oldDay); //finds it through date
       // finding index
       var plansIndex = planObject.findIndex((plans) => plans.date === oldDay);
-      elementCreation(yesterdaysPlan);
+
+      if (plansIndex == -1) {
+        // document.createElement(originalDOM);
+      }
     } else {
-      alert("No Plan for this day " + oldDay + "!");
-      // Stop the date going back and don't make the elements disappear
+      formCont.style.display = "none";
+      plannerContainer.textContent = "";
+      elementCreation(yesterdaysPlan);
     }
   } else {
     date.innerText = yesterday;
+    console.log(yesterday);
     // Getting yesterday's data from local storage
     let planObject = JSON.parse(localStorage.getItem("plans"));
     console.log(planObject);
     var yesterdaysPlan = planObject.find((plans) => plans.date === yesterday); //finds it through date
     var plansIndex = planObject.findIndex((plans) => plans.date === yesterday); // finds index
-    console.log(yesterdaysPlan);
-    elementCreation(yesterdaysPlan);
+    console.log(plansIndex);
+
+    // to show the plan inputs where there is no plan. if You skipped a day
+    if (plansIndex == -1) {
+      // document.createElement(originalDOM);
+      // do nothing with the code
+    } else {
+      formCont.style.display = "none";
+      plannerContainer.textContent = "";
+      elementCreation(yesterdaysPlan);
+    }
   }
 }
 
-function nextDay() {}
+function nextDay() {
+  stateTracker = stateTracker + 1;
+}
 
 function elementCreation(planToCreate) {
   // create container where the text will come up
