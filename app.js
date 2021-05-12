@@ -26,8 +26,8 @@ const successInput = document.querySelector("#success-input");
 const failureInput = document.querySelector("#failure-input");
 
 const editedPlanInput = document.getElementsByName("edit-input");
-// selecting body
-// var originalDOM = document.body.innerHTML;
+// Selecting starting planner node
+// plannerContainer.style.display = "none";
 
 // SELECTORS END
 
@@ -71,12 +71,8 @@ date.innerText = today; // to display the date
 
 function getOldDay() {
   var oldDay = new Date();
-  console.log(oldDay);
-  console.log(stateTracker);
   oldDay.setDate(oldDay.getDate() - Math.abs(stateTracker)).toString();
-  console.log(oldDay);
-  oldDay = getFormattedDate(oldDay);
-  return oldDay;
+  return (oldDay = getFormattedDate(oldDay));
 }
 
 // QOUTE API START
@@ -159,7 +155,9 @@ function saveLocal(plan) {
 
 function editPlan() {
   editStateTracker = 1; // to track that the edit button was pressed
-  plannerContainer.textContent = "";
+  var savedPlannerContainer = document.querySelector(".saved-text-container");
+  savedPlannerContainer.textContent = "";
+
   // gets the plan
   let planObject = JSON.parse(localStorage.getItem("plans"));
 
@@ -214,9 +212,6 @@ function saveEditedPlan(event) {
     }
     planObject.splice(plansIndex, 1, editedPlan); // to remove the edited element and re-enter it
     localStorage.setItem("plans", JSON.stringify(planObject));
-    console.log(planObject);
-    console.log(editedPlan);
-    console.log(plansIndex);
   } else {
     alert("You need to edit first to save the edited plan!");
   }
@@ -224,12 +219,12 @@ function saveEditedPlan(event) {
 
 function previousDay() {
   stateTracker = stateTracker - 1;
+  console.log(stateTracker + " statetracker");
   yesterdayText.innerText = "PREVIOUS DAY";
-
+  var savedPlannerContainer = document.querySelector(".saved-text-container");
   if (stateTracker < -1) {
-    oldDay = getOldDay();
+    oldDay = getOldDay().toString();
     date.innerText = oldDay;
-    console.log(oldDay);
     // Getting yesterday's data from local storage
     let planObject = JSON.parse(localStorage.getItem("plans"));
     yesterdayText.innerText = "PREVIOUS DAY";
@@ -239,32 +234,30 @@ function previousDay() {
       var yesterdaysPlan = planObject.find((plans) => plans.date === oldDay); //finds it through date
       // finding index
       var plansIndex = planObject.findIndex((plans) => plans.date === oldDay);
-
-      if (plansIndex == -1) {
-        // document.createElement(originalDOM);
-      }
+    }
+    if (plansIndex == undefined) {
+      plannerContainer.style.display = "block";
+      savedPlannerContainer.style.display = "none";
     } else {
-      formCont.style.display = "none";
-      plannerContainer.textContent = "";
+      plannerContainer.style.display = "none";
+
+      document.body.removeChild(savedPlannerContainer);
       elementCreation(yesterdaysPlan);
     }
   } else {
     date.innerText = yesterday;
-    console.log(yesterday);
     // Getting yesterday's data from local storage
     let planObject = JSON.parse(localStorage.getItem("plans"));
     console.log(planObject);
     var yesterdaysPlan = planObject.find((plans) => plans.date === yesterday); //finds it through date
     var plansIndex = planObject.findIndex((plans) => plans.date === yesterday); // finds index
-    console.log(plansIndex);
 
     // to show the plan inputs where there is no plan. if You skipped a day
-    if (plansIndex == -1) {
-      // document.createElement(originalDOM);
+    if (plansIndex == undefined) {
+      plannerContainer.style.display = "block";
       // do nothing with the code
     } else {
-      formCont.style.display = "none";
-      plannerContainer.textContent = "";
+      plannerContainer.style.display = "none";
       elementCreation(yesterdaysPlan);
     }
   }
@@ -275,10 +268,11 @@ function nextDay() {
 }
 
 function elementCreation(planToCreate) {
+  console.log(planToCreate);
   // create container where the text will come up
   const plans = document.createElement("div");
   plans.classList.add("saved-text-container");
-  plannerContainer.appendChild(plans);
+  document.body.appendChild(plans);
 
   // GOALS CONTAINER
   // Creates container to hold label text and data got from local storage
@@ -360,7 +354,8 @@ function elementCreation(planToCreate) {
 function editElementCreation(planToCreate, plansIndex) {
   // creates form
   const forma = document.createElement("form");
-  plannerContainer.appendChild(forma);
+  forma.classList.add("saved-text-container");
+  document.body.appendChild(forma);
 
   // create container where the text will come up
   const plans = document.createElement("div");
