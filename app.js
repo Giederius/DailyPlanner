@@ -269,7 +269,7 @@ function nextDay() {
   var savedPlannerContainer = document.querySelector(".saved-text-container");
 
   if (stateTracker >= 1) {
-    // days beyond yesterday
+    // days beyond tomorrow
     date.innerText = day;
     // Getting yesterday's data from local storage
     var planAndIndex = getSavedPlanandIndex(day);
@@ -297,7 +297,7 @@ function nextDay() {
       savedPlannerContainer
     );
   } else {
-    // tomorrow plan
+    // tomorrow's plan
     date.innerText = day;
     // Getting yesterday's data from local storage
     var planAndIndex = getSavedPlanandIndex(day);
@@ -319,6 +319,56 @@ function elementCreation(planToCreate) {
   const plans = document.createElement("div");
   plans.classList.add("saved-text-container");
   document.body.appendChild(plans);
+
+  var planArray = Object.values(planToCreate);
+
+  planArray.shift();
+  console.log(planArray.length);
+  console.log(planArray[2]);
+  let elements = [
+    ["goalsContainer", "goalsText", "Your Goals were: ", "goalsOutput"],
+    ["targetContainer", "targetText", "Your Targets were: ", "targetOutput"],
+    [
+      "successContainer",
+      "successText",
+      "Your Successes were: ",
+      "successOutput",
+    ],
+    [
+      "failuresContainer",
+      "failuresText",
+      "Your Failures were: ",
+      "failuresOutput",
+    ],
+  ];
+
+  planArray.forEach(outputCreation);
+
+  function outputCreation() {
+    for (let i = 0; i <= planArray.length; i++) {
+      elements[i][0] = document.createElement("div");
+      elements[i][0].classList.add("form-output");
+      plans.appendChild(elements[i][0]);
+
+      // creates h3 to hold "label" text
+      elements[i][1] = document.createElement("h3");
+      elements[i][1].classList.add("label-from-saved");
+      elements[i][1].innerHTML = elements[i][2].toString();
+      elements[i][0].appendChild(elements[i][1]);
+
+      // creates p to hold text input
+      elements[i][3] = document.createElement("p");
+      elements[i][3].classList.add("text-output");
+
+      if (planArray[i] !== null) {
+        elements[i][3].innerHTML = planArray[i];
+      } else {
+        elements[i][3].innerHTML = "";
+      }
+
+      elements[i][0].appendChild(elements[i][3]);
+    }
+  }
 
   // GOALS CONTAINER
   // Creates container to hold label text and data got from local storage
