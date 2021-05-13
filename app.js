@@ -13,7 +13,6 @@ const plannerContainer = document.querySelector(".planner");
 const formCont = document.querySelector(".form-container");
 
 // Selectors - buttons
-const startBtn = document.querySelector("#start");
 const editBtn = document.querySelector("#edit");
 const saveEditBtn = document.querySelector("#save");
 const yesterdayBtn = document.querySelector("#yesterday");
@@ -36,11 +35,6 @@ yesterdayBtn.addEventListener("click", previousDay);
 tomorrowBtn.addEventListener("click", nextDay);
 editBtn.addEventListener("click", editPlan);
 saveEditBtn.addEventListener("click", saveEditedPlan);
-
-startBtn.addEventListener("click", () => {
-  formCont.style.display = "flex";
-  startBtn.style.display = "none";
-});
 
 // EVENT LISTENERS END
 
@@ -131,19 +125,28 @@ function addPlan(event) {
 // Saving to LOCAL STORAGE
 function saveLocal(plan) {
   // Checking if there's anything in here??
-  let plans; // plan array, where objects will be saved
-  if (localStorage.getItem("plans") === null) {
-    plans = [];
+  if (
+    goalsInput.value == "" &&
+    targetInput.value == "" &&
+    successInput.value == "" &&
+    failureInput.value == ""
+  ) {
+    alert("Can't save an empty plan");
   } else {
-    plans = JSON.parse(localStorage.getItem("plans")); // returns plans that were saved in local storage
-  }
-  // Checks if there's an input for today so there won't be any duplicates
-  if (plans.find((plans) => plans.date === date.innerText)) {
-    alert("You already set up today");
-    plans.pop();
-  } else {
-    plans.push(plan); // pushes latest plan
-    localStorage.setItem("plans", JSON.stringify(plans)); // saves latest plan to storage
+    let plans; // plan array, where objects will be saved
+    if (localStorage.getItem("plans") === null) {
+      plans = [];
+    } else {
+      plans = JSON.parse(localStorage.getItem("plans")); // returns plans that were saved in local storage
+    }
+    // Checks if there's an input for today so there won't be any duplicates
+    if (plans.find((plans) => plans.date === date.innerText)) {
+      alert("You already set up today");
+      plans.pop();
+    } else {
+      plans.push(plan); // pushes latest plan
+      localStorage.setItem("plans", JSON.stringify(plans)); // saves latest plan to storage
+    }
   }
 }
 

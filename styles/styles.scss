@@ -73,10 +73,6 @@ body {
     }
   }
   .planner {
-    #start {
-      @include btnDesign();
-      display: none;
-    }
     form {
       input,
       textarea {
