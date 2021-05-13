@@ -122,11 +122,15 @@ body {
       }
     }
   }
-  .saved-text-container {
+
+  .saved-text-container,
+  .form-container {
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     padding: 3rem;
-    .form-output {
+    .form-output,
+    .form-input {
       display: flex;
       flex-direction: row;
       align-content: center;

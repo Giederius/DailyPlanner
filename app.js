@@ -26,8 +26,6 @@ const successInput = document.querySelector("#success-input");
 const failureInput = document.querySelector("#failure-input");
 
 const editedPlanInput = document.getElementsByName("edit-input");
-// Selecting starting planner node
-// plannerContainer.style.display = "none";
 
 // SELECTORS END
 
@@ -36,7 +34,7 @@ submitBtn.addEventListener("click", addPlan);
 yesterdayBtn.addEventListener("click", previousDay);
 tomorrowBtn.addEventListener("click", nextDay);
 editBtn.addEventListener("click", editPlan);
-saveEditBtn.addEventListener("click ", saveEditedPlan);
+saveEditBtn.addEventListener("click", saveEditedPlan);
 
 // startBtn.addEventListener("click", () => {
 //   formCont.style.display = "flex";
@@ -62,18 +60,18 @@ tomorrow.setDate(tomorrow.getDay() + 1);
 tomorrow = getFormattedDate(tomorrow);
 
 var yesterday = new Date();
-
-yesterday.setDate(yesterday.getDate() - 1); //+1 veike
+yesterday.setDate(yesterday.getDate() - 1);
 yesterday = getFormattedDate(yesterday);
+
 today = getFormattedDate(today);
 date.innerText = today; // to display the date
-// Date ends
 
 function getOldDay() {
   var oldDay = new Date();
   oldDay.setDate(oldDay.getDate() - Math.abs(stateTracker)).toString();
   return (oldDay = getFormattedDate(oldDay));
 }
+// Date ends
 
 // QOUTE API START
 function getQoute() {
@@ -156,7 +154,11 @@ function saveLocal(plan) {
 function editPlan() {
   editStateTracker = 1; // to track that the edit button was pressed
   var savedPlannerContainer = document.querySelector(".saved-text-container");
-  savedPlannerContainer.textContent = "";
+  if (savedPlannerContainer != null) {
+    savedPlannerContainer.remove();
+  } else {
+    plannerContainer.style.display = "none";
+  }
 
   // gets the plan
   let planObject = JSON.parse(localStorage.getItem("plans"));
@@ -219,7 +221,6 @@ function saveEditedPlan(event) {
 
 function previousDay() {
   stateTracker = stateTracker - 1;
-  console.log(stateTracker + " statetracker");
   yesterdayText.innerText = "PREVIOUS DAY";
   var savedPlannerContainer = document.querySelector(".saved-text-container");
   if (stateTracker < -1) {

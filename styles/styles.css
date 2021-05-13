@@ -193,7 +193,9 @@ body .planner form button {
   background-color: transparent;
 }
 
-body .saved-text-container {
+body .saved-text-container,
+body .form-container {
+  margin: 0 auto;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -204,7 +206,10 @@ body .saved-text-container {
   padding: 3rem;
 }
 
-body .saved-text-container .form-output {
+body .saved-text-container .form-output,
+body .saved-text-container .form-input,
+body .form-container .form-output,
+body .form-container .form-input {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -218,13 +223,19 @@ body .saved-text-container .form-output {
   padding: 0.5rem;
 }
 
-body .saved-text-container .form-output .label-from-saved {
+body .saved-text-container .form-output .label-from-saved,
+body .saved-text-container .form-input .label-from-saved,
+body .form-container .form-output .label-from-saved,
+body .form-container .form-input .label-from-saved {
   font-family: "Fjalla One", sans-serif;
   font-size: 1.3rem;
   padding: 0.1rem 0.5rem;
 }
 
-body .saved-text-container .form-output .text-output {
+body .saved-text-container .form-output .text-output,
+body .saved-text-container .form-input .text-output,
+body .form-container .form-output .text-output,
+body .form-container .form-input .text-output {
   font-size: 1.3rem;
   font-family: "Open Sans", sans-serif;
   border: none;
