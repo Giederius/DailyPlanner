@@ -160,13 +160,9 @@ function editPlan() {
     plannerContainer.style.display = "none";
   }
 
-  // gets the plan
-  let planObject = JSON.parse(localStorage.getItem("plans"));
-
-  // gets the index
-  var plansIndex = planObject.findIndex((plans) => plans.date === day);
-
-  editElementCreation(planObject, plansIndex);
+  var planAndIndex = getSavedPlanandIndex(day);
+  console.log(planAndIndex[0]);
+  editElementCreation(planAndIndex[0], planAndIndex[1]);
 }
 
 function saveEditedPlan(event) {
@@ -202,11 +198,23 @@ function getSavedPlanandIndex(day) {
   let planObject = JSON.parse(localStorage.getItem("plans"));
   var plan = planObject.find((plans) => plans.date === day); //finds plan through date
   planAndIndex.push(plan);
-  // finding index
 
+  // finding index
   var plansIndex = planObject.findIndex((plans) => plans.date === day);
   planAndIndex.push(plansIndex);
   return planAndIndex;
+}
+
+function showPlanInputOrOutput(plan, index, container) {
+  if (index == -1 || index == undefined) {
+    plannerContainer.style.display = "block";
+    container.style.display = "none";
+  } else {
+    plannerContainer.style.display = "none";
+
+    document.body.removeChild(container);
+    elementCreation(plan);
+  }
 }
 
 function previousDay() {
@@ -220,29 +228,20 @@ function previousDay() {
     var planAndIndex = getSavedPlanandIndex(day);
 
     // if there's no plan on that particular day, unhide the main input fields.
-    if (planAndIndex[1] == -1 || planAndIndex[1] == undefined) {
-      plannerContainer.style.display = "block";
-      savedPlannerContainer.style.display = "none";
-    } else {
-      plannerContainer.style.display = "none";
-
-      document.body.removeChild(savedPlannerContainer);
-      elementCreation(planAndIndex[0]);
-    }
+    showPlanInputOrOutput(
+      planAndIndex[0],
+      planAndIndex[1],
+      savedPlannerContainer
+    );
   } else if (stateTracker == 0) {
     date.innerText = day;
     // Getting yesterday's data from local storage
     var planAndIndex = getSavedPlanandIndex(day);
-
-    if (planAndIndex[1] == -1 || planAndIndex[1] == undefined) {
-      plannerContainer.style.display = "block";
-      savedPlannerContainer.style.display = "none";
-    } else {
-      plannerContainer.style.display = "none";
-
-      document.body.removeChild(savedPlannerContainer);
-      elementCreation(planAndIndex[0]);
-    }
+    showPlanInputOrOutput(
+      planAndIndex[0],
+      planAndIndex[1],
+      savedPlannerContainer
+    );
   } else {
     // yesterday plan
     date.innerText = day;
@@ -290,17 +289,13 @@ function nextDay() {
     }
   } else if (stateTracker <= 0) {
     date.innerText = day;
-    // Getting yesterday's data from local storage
-    var planAndIndex = getSavedPlanandIndex(day);
-    if (planAndIndex[1] == -1 || planAndIndex[1] == undefined) {
-      plannerContainer.style.display = "block";
-      document.body.removeChild(savedPlannerContainer);
-    } else {
-      plannerContainer.style.display = "none";
 
-      document.body.removeChild(savedPlannerContainer);
-      elementCreation(planAndIndex[0]);
-    }
+    var planAndIndex = getSavedPlanandIndex(day);
+    showPlanInputOrOutput(
+      planAndIndex[0],
+      planAndIndex[1],
+      savedPlannerContainer
+    );
   } else {
     // tomorrow plan
     date.innerText = day;
@@ -402,7 +397,7 @@ function elementCreation(planToCreate) {
   // FAILURES END
 }
 
-function editElementCreation(planToCreate, plansIndex) {
+function editElementCreation(planToCreate) {
   // creates form
   const forma = document.createElement("form");
   forma.classList.add("saved-text-container");
@@ -429,7 +424,7 @@ function editElementCreation(planToCreate, plansIndex) {
   const goalsOutput = document.createElement("textarea");
   goalsOutput.name = "edit-input";
   goalsOutput.classList.add("text-output");
-  goalsOutput.value = planToCreate[plansIndex].goals;
+  goalsOutput.value = planToCreate.goals;
   goalsOutput.setAttribute("cols", "60");
   goalsOutput.setAttribute("rows", "5");
   goalsContainer.appendChild(goalsOutput);
@@ -452,7 +447,7 @@ function editElementCreation(planToCreate, plansIndex) {
   targetOutput.id = "target-input";
   targetOutput.name = "edit-input";
   targetOutput.classList.add("text-output");
-  targetOutput.value = planToCreate[plansIndex].targets;
+  targetOutput.value = planToCreate.targets;
   targetOutput.setAttribute("cols", "60");
   targetOutput.setAttribute("rows", "5");
   targetContainer.appendChild(targetOutput);
@@ -475,7 +470,7 @@ function editElementCreation(planToCreate, plansIndex) {
   successOutput.id = "success-input";
   successOutput.name = "edit-input";
   successOutput.classList.add("text-output");
-  successOutput.value = planToCreate[plansIndex].successes;
+  successOutput.value = planToCreate.successes;
   successOutput.setAttribute("cols", "60");
   successOutput.setAttribute("rows", "5");
   successContainer.appendChild(successOutput);
@@ -498,7 +493,7 @@ function editElementCreation(planToCreate, plansIndex) {
   failuresOutput.id = "failure-input";
   failuresOutput.name = "edit-input";
   failuresOutput.classList.add("text-output");
-  failuresOutput.value = planToCreate[plansIndex].failures;
+  failuresOutput.value = planToCreate.failures;
   failuresOutput.setAttribute("cols", "60");
   failuresOutput.setAttribute("rows", "5");
   failuresContainer.appendChild(failuresOutput);
