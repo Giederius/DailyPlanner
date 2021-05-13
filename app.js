@@ -6,6 +6,7 @@ var editStateTracker = 0; // to edit the inputs it has to be one. which means th
 const date = document.querySelector("#date");
 const qoute = document.querySelector("#qoute-text");
 const yesterdayText = document.querySelector("#yesterday-text");
+const tomorrowsText = document.querySelector("#tomorrow-text");
 
 // Selectors - containers
 const plannerContainer = document.querySelector(".planner");
@@ -46,6 +47,17 @@ saveEditBtn.addEventListener("click", saveEditedPlan);
 // Functions
 
 // Date
+//  one function to replace them all (dates)
+function getDay(tracker) {
+  var day = new Date();
+  if (tracker <= 0) {
+    day.setDate(day.getDate() - Math.abs(tracker)).toString();
+  } else if (tracker > 0) {
+    day.setDate(day.getDate() + tracker).toString();
+  }
+  return getFormattedDate(day);
+}
+
 function getFormattedDate(date) {
   let year = date.getFullYear();
   let month = (1 + date.getMonth()).toString().padStart(2, "0");
@@ -54,23 +66,7 @@ function getFormattedDate(date) {
   return day + "." + month + "." + year;
 }
 
-var today = new Date();
-var tomorrow = new Date();
-tomorrow.setDate(tomorrow.getDay() + 1);
-tomorrow = getFormattedDate(tomorrow);
-
-var yesterday = new Date();
-yesterday.setDate(yesterday.getDate() - 1);
-yesterday = getFormattedDate(yesterday);
-
-today = getFormattedDate(today);
-date.innerText = today; // to display the date
-
-function getOldDay() {
-  var oldDay = new Date();
-  oldDay.setDate(oldDay.getDate() - Math.abs(stateTracker)).toString();
-  return (oldDay = getFormattedDate(oldDay));
-}
+date.innerText = getDay(stateTracker);
 // Date ends
 
 // QOUTE API START
@@ -221,51 +217,133 @@ function saveEditedPlan(event) {
 
 function previousDay() {
   stateTracker = stateTracker - 1;
+  var day = getDay(stateTracker);
   yesterdayText.innerText = "PREVIOUS DAY";
   var savedPlannerContainer = document.querySelector(".saved-text-container");
   if (stateTracker < -1) {
-    oldDay = getOldDay().toString();
-    date.innerText = oldDay;
+    // days beyond yesterday
+    date.innerText = day;
     // Getting yesterday's data from local storage
     let planObject = JSON.parse(localStorage.getItem("plans"));
-    yesterdayText.innerText = "PREVIOUS DAY";
-    // CHECK IF THERE's A VALUE if not throw error
-    if (planObject.find((plans) => plans.date === oldDay)) {
-      // If there's a value show it
-      var yesterdaysPlan = planObject.find((plans) => plans.date === oldDay); //finds it through date
-      // finding index
-      var plansIndex = planObject.findIndex((plans) => plans.date === oldDay);
-    }
-    if (plansIndex == undefined) {
+    var plan = planObject.find((plans) => plans.date === day); //finds plan through date
+    // finding index
+    var plansIndex = planObject.findIndex((plans) => plans.date === day);
+    console.log(plansIndex);
+    // if there's no plan on that particular day, unhide the main input fields.
+    if (plansIndex == -1 || plansIndex == undefined) {
       plannerContainer.style.display = "block";
       savedPlannerContainer.style.display = "none";
     } else {
       plannerContainer.style.display = "none";
 
       document.body.removeChild(savedPlannerContainer);
-      elementCreation(yesterdaysPlan);
+      elementCreation(plan);
     }
-  } else {
-    date.innerText = yesterday;
+  } else if (stateTracker == 0) {
+    date.innerText = day;
     // Getting yesterday's data from local storage
     let planObject = JSON.parse(localStorage.getItem("plans"));
-    console.log(planObject);
-    var yesterdaysPlan = planObject.find((plans) => plans.date === yesterday); //finds it through date
-    var plansIndex = planObject.findIndex((plans) => plans.date === yesterday); // finds index
-
-    // to show the plan inputs where there is no plan. if You skipped a day
-    if (plansIndex == undefined) {
+    var plan = planObject.find((plans) => plans.date === day); //finds plan through date
+    // finding index
+    var plansIndex = planObject.findIndex((plans) => plans.date === day);
+    if (plansIndex == -1 || plansIndex == undefined) {
       plannerContainer.style.display = "block";
-      // do nothing with the code
+      savedPlannerContainer.style.display = "none";
     } else {
       plannerContainer.style.display = "none";
-      elementCreation(yesterdaysPlan);
+
+      document.body.removeChild(savedPlannerContainer);
+      elementCreation(plan);
+    }
+  } else {
+    // yesterday plan
+    date.innerText = day;
+    // Getting yesterday's data from local storage
+    let planObject = JSON.parse(localStorage.getItem("plans"));
+    // finding plan
+    var plan = planObject.find((plans) => plans.date === day); //finds it through date
+    var plansIndex = planObject.findIndex((plans) => plans.date === day); // finds index
+    console.log(plansIndex);
+    // if there's no plan on that particular day, unhide the main input fields.
+    if (plansIndex == -1 || plansIndex == undefined) {
+      plannerContainer.style.display = "block";
+    } else {
+      if (savedPlannerContainer !== null) {
+        document.body.removeChild(savedPlannerContainer);
+      }
+      plannerContainer.style.display = "none";
+      elementCreation(plan);
     }
   }
 }
 
 function nextDay() {
   stateTracker = stateTracker + 1;
+  var day = getDay(stateTracker);
+  tomorrowsText.innerText = "NEXT DAY";
+  date.innerHTML = day;
+
+  var savedPlannerContainer = document.querySelector(".saved-text-container");
+
+  if (stateTracker >= 1) {
+    // days beyond yesterday
+    date.innerText = day;
+    // Getting yesterday's data from local storage
+    let planObject = JSON.parse(localStorage.getItem("plans"));
+    var plan = planObject.find((plans) => plans.date === day); //finds plan through date
+    // finding index
+    var plansIndex = planObject.findIndex((plans) => plans.date === day);
+    console.log(plansIndex);
+    // if there's no plan on that particular day, unhide the main input fields.
+    if (plansIndex == -1 || plansIndex == undefined) {
+      plannerContainer.style.display = "block";
+      if (savedPlannerContainer !== null) {
+        document.body.removeChild(savedPlannerContainer);
+      }
+    } else {
+      plannerContainer.style.display = "none";
+
+      if (savedPlannerContainer !== null) {
+        document.body.removeChild(savedPlannerContainer);
+      }
+      elementCreation(plan);
+    }
+  } else if (stateTracker <= 0) {
+    date.innerText = day;
+    // Getting yesterday's data from local storage
+    let planObject = JSON.parse(localStorage.getItem("plans"));
+    var plan = planObject.find((plans) => plans.date === day); //finds plan through date
+    // finding index
+    var plansIndex = planObject.findIndex((plans) => plans.date === day);
+    console.log(plansIndex);
+    if (plansIndex == -1 || plansIndex == undefined) {
+      plannerContainer.style.display = "block";
+      document.body.removeChild(savedPlannerContainer);
+    } else {
+      plannerContainer.style.display = "none";
+
+      document.body.removeChild(savedPlannerContainer);
+      elementCreation(plan);
+    }
+  } else {
+    // tomorrow plan
+    date.innerText = day;
+    // Getting yesterday's data from local storage
+    let planObject = JSON.parse(localStorage.getItem("plans"));
+    // finding plan
+    var plan = planObject.find((plans) => plans.date === day); //finds it through date
+    var plansIndex = planObject.findIndex((plans) => plans.date === day); // finds index
+    console.log(plansIndex);
+    // if there's no plan on that particular day, unhide the main input fields.
+    if (plansIndex == undefined) {
+      plannerContainer.style.display = "block";
+      document.body.removeChild(savedPlannerContainer);
+    } else {
+      plannerContainer.style.display = "none";
+
+      elementCreation(plan);
+    }
+  }
 }
 
 function elementCreation(planToCreate) {
