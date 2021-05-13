@@ -37,10 +37,10 @@ tomorrowBtn.addEventListener("click", nextDay);
 editBtn.addEventListener("click", editPlan);
 saveEditBtn.addEventListener("click", saveEditedPlan);
 
-// startBtn.addEventListener("click", () => {
-//   formCont.style.display = "flex";
-//   startBtn.style.display = "none";
-// });
+startBtn.addEventListener("click", () => {
+  formCont.style.display = "flex";
+  startBtn.style.display = "none";
+});
 
 // EVENT LISTENERS END
 
@@ -149,6 +149,7 @@ function saveLocal(plan) {
 
 function editPlan() {
   editStateTracker = 1; // to track that the edit button was pressed
+  var day = getDay(stateTracker);
   var savedPlannerContainer = document.querySelector(".saved-text-container");
   if (savedPlannerContainer != null) {
     savedPlannerContainer.remove();
@@ -161,13 +162,11 @@ function editPlan() {
 
   // gets the index
   if (stateTracker == 0) {
-    var plansIndex = planObject.findIndex((plans) => plans.date === today);
+    var plansIndex = planObject.findIndex((plans) => plans.date === day);
   } else if (stateTracker == -1) {
-    var plansIndex = planObject.findIndex((plans) => plans.date === yesterday);
+    var plansIndex = planObject.findIndex((plans) => plans.date === day);
   } else if (stateTracker < -1) {
-    oldDay = getOldDay();
-
-    var plansIndex = planObject.findIndex((plans) => plans.date === oldDay);
+    var plansIndex = planObject.findIndex((plans) => plans.date === day);
   }
 
   editElementCreation(planObject, plansIndex);
@@ -175,13 +174,7 @@ function editPlan() {
 
 function saveEditedPlan(event) {
   event.preventDefault();
-  if (stateTracker == 0) {
-    editDay = today;
-  } else if (stateTracker == -1) {
-    editDay = yesterday;
-  } else if (stateTracker < -1) {
-    editDay = getOldDay();
-  }
+  var day = getDay(stateTracker);
 
   goalsInput.value = editedPlanInput[0].value;
   targetInput.value = editedPlanInput[1].value;
@@ -190,7 +183,7 @@ function saveEditedPlan(event) {
 
   if (editStateTracker === 1) {
     var editedPlan = new Plan(
-      editDay,
+      day,
       goalsInput.value,
       targetInput.value,
       successInput.value,
@@ -199,15 +192,8 @@ function saveEditedPlan(event) {
 
     planObject = JSON.parse(localStorage.getItem("plans"));
     // gets the index
-    if (stateTracker == 0) {
-      var plansIndex = planObject.findIndex((plans) => plans.date === today);
-    } else if (stateTracker == -1) {
-      var plansIndex = planObject.findIndex(
-        (plans) => plans.date === yesterday
-      );
-    } else if (stateTracker < -1) {
-      var plansIndex = planObject.findIndex((plans) => plans.date === oldDay);
-    }
+    var plansIndex = planObject.findIndex((plans) => plans.date === day);
+
     planObject.splice(plansIndex, 1, editedPlan); // to remove the edited element and re-enter it
     localStorage.setItem("plans", JSON.stringify(planObject));
   } else {
