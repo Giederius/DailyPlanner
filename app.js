@@ -161,7 +161,6 @@ function editPlan() {
   }
 
   var planAndIndex = getSavedPlanandIndex(day);
-  console.log(planAndIndex[0]);
   editElementCreation(planAndIndex[0], planAndIndex[1]);
 }
 
@@ -205,14 +204,22 @@ function getSavedPlanandIndex(day) {
   return planAndIndex;
 }
 
+function ifToRemoveContainer(container) {
+  if (container !== null) {
+    document.body.removeChild(container);
+  }
+}
+
 function showPlanInputOrOutput(plan, index, container) {
   if (index == -1 || index == undefined) {
+    console.log(index);
     plannerContainer.style.display = "block";
     container.style.display = "none";
   } else {
     plannerContainer.style.display = "none";
+    console.log(index);
 
-    document.body.removeChild(container);
+    ifToRemoveContainer(container);
     elementCreation(plan);
   }
 }
@@ -251,9 +258,7 @@ function previousDay() {
     if (planAndIndex[1] == -1 || planAndIndex[1] == undefined) {
       plannerContainer.style.display = "block";
     } else {
-      if (savedPlannerContainer !== null) {
-        document.body.removeChild(savedPlannerContainer);
-      }
+      ifToRemoveContainer(savedPlannerContainer);
       plannerContainer.style.display = "none";
       elementCreation(planAndIndex[0]);
     }
@@ -276,15 +281,11 @@ function nextDay() {
     // if there's no plan on that particular day, unhide the main input fields.
     if (planAndIndex[1] == -1 || planAndIndex[1] == undefined) {
       plannerContainer.style.display = "block";
-      if (savedPlannerContainer !== null) {
-        document.body.removeChild(savedPlannerContainer);
-      }
+      ifToRemoveContainer(savedPlannerContainer);
     } else {
       plannerContainer.style.display = "none";
 
-      if (savedPlannerContainer !== null) {
-        document.body.removeChild(savedPlannerContainer);
-      }
+      ifToRemoveContainer(savedPlannerContainer);
       elementCreation(planAndIndex[0]);
     }
   } else if (stateTracker <= 0) {
