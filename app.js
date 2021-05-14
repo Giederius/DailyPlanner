@@ -323,8 +323,6 @@ function elementCreation(planToCreate) {
   var planArray = Object.values(planToCreate);
 
   planArray.shift();
-  console.log(planArray.length);
-  console.log(planArray[2]);
   let elements = [
     ["goalsContainer", "goalsText", "Your Goals were: ", "goalsOutput"],
     ["targetContainer", "targetText", "Your Targets were: ", "targetOutput"],
@@ -369,82 +367,6 @@ function elementCreation(planToCreate) {
       elements[i][0].appendChild(elements[i][3]);
     }
   }
-
-  // GOALS CONTAINER
-  // Creates container to hold label text and data got from local storage
-  const goalsContainer = document.createElement("div");
-  goalsContainer.classList.add("form-output");
-  plans.appendChild(goalsContainer);
-
-  // creates h3 to hold "label" text
-  const goalsText = document.createElement("h3");
-  goalsText.classList.add("label-from-saved");
-  goalsText.innerHTML = "Your Goals were: ";
-  goalsContainer.appendChild(goalsText);
-
-  // creates p to hold text input
-  const goalsOutput = document.createElement("p");
-  goalsOutput.classList.add("text-output");
-  goalsOutput.innerHTML = planToCreate.goals;
-  goalsContainer.appendChild(goalsOutput);
-  // GOALS END
-
-  // TARGETS CONTAINER
-  // Creates container to hold label text and data got from local storage
-  const targetContainer = document.createElement("div");
-  targetContainer.classList.add("form-output");
-  plans.appendChild(targetContainer);
-
-  // creates h3 to hold "label" text
-  const targetText = document.createElement("h3");
-  targetText.classList.add("label-from-saved");
-  targetText.innerHTML = "Your Targets were: ";
-  targetContainer.appendChild(targetText);
-
-  // creates p to hold text input
-  const targetOutput = document.createElement("p");
-  targetOutput.classList.add("text-output");
-  targetOutput.innerHTML = planToCreate.targets;
-  targetContainer.appendChild(targetOutput);
-  // TARGETS END
-
-  // SUCCESSES CONTAINER
-  // Creates container to hold label text and data got from local storage
-  const successContainer = document.createElement("div");
-  successContainer.classList.add("form-output");
-  plans.appendChild(successContainer);
-
-  // creates h3 to hold "label" text
-  const successText = document.createElement("h3");
-  successText.classList.add("label-from-saved");
-  successText.innerHTML = "Your Successes were: ";
-  successContainer.appendChild(successText);
-
-  // creates p to hold text input
-  const successOutput = document.createElement("p");
-  successOutput.classList.add("text-output");
-  successOutput.innerHTML = planToCreate.successes;
-  successContainer.appendChild(successOutput);
-  // SUCCESS END
-
-  // FAILURES CONTAINER
-  // Creates container to hold label text and data got from local storage
-  const failuresContainer = document.createElement("div");
-  failuresContainer.classList.add("form-output");
-  plans.appendChild(failuresContainer);
-
-  // creates h3 to hold "label" text
-  const failuresText = document.createElement("h3");
-  failuresText.classList.add("label-from-saved");
-  failuresText.innerHTML = "Your Failures were: ";
-  failuresContainer.appendChild(failuresText);
-
-  // creates p to hold text input
-  const failuresOutput = document.createElement("p");
-  failuresOutput.classList.add("text-output");
-  failuresOutput.innerHTML = planToCreate.failures;
-  failuresContainer.appendChild(failuresOutput);
-  // FAILURES END
 }
 
 function editElementCreation(planToCreate) {
@@ -458,94 +380,48 @@ function editElementCreation(planToCreate) {
   plans.classList.add("form-container");
   forma.appendChild(plans);
 
-  // GOALS CONTAINER
-  // Creates container to hold label text and data got from local storage
-  const goalsContainer = document.createElement("div");
-  goalsContainer.classList.add("form-input");
-  plans.appendChild(goalsContainer);
+  var planArray = Object.values(planToCreate);
+  planArray.shift();
 
-  // creates h3 to hold "label" text
-  const goalsText = document.createElement("h3");
-  goalsText.classList.add("label-from-saved");
-  goalsText.innerHTML = "Your Goals were: ";
-  goalsContainer.appendChild(goalsText);
+  let elements = [
+    ["goalsContainer", "goalsText", "Your Goals were: ", "goalsOutput"],
+    ["targetContainer", "targetText", "Your Targets were: ", "targetOutput"],
+    [
+      "successContainer",
+      "successText",
+      "Your Successes were: ",
+      "successOutput",
+    ],
+    [
+      "failuresContainer",
+      "failuresText",
+      "Your Failures were: ",
+      "failuresOutput",
+    ],
+  ];
 
-  // creates textarea to hold text input
-  const goalsOutput = document.createElement("textarea");
-  goalsOutput.name = "edit-input";
-  goalsOutput.classList.add("text-output");
-  goalsOutput.value = planToCreate.goals;
-  goalsOutput.setAttribute("cols", "60");
-  goalsOutput.setAttribute("rows", "5");
-  goalsContainer.appendChild(goalsOutput);
-  // GOALS END
+  planArray.forEach(editedOutputCreation);
 
-  // TARGETS CONTAINER
-  // Creates container to hold label text and data got from local storage
-  const targetContainer = document.createElement("div");
-  targetContainer.classList.add("form-input");
-  plans.appendChild(targetContainer);
+  function editedOutputCreation() {
+    for (let i = 0; i <= planArray.length; i++) {
+      elements[i][0] = document.createElement("div");
+      elements[i][0].classList.add("form-input");
+      plans.appendChild(elements[i][0]);
 
-  // creates h3 to hold "label" text
-  const targetText = document.createElement("h3");
-  targetText.classList.add("label-from-saved");
-  targetText.innerHTML = "Your Targets were: ";
-  targetContainer.appendChild(targetText);
+      // creates h3 to hold "label" text
+      elements[i][1] = document.createElement("h3");
+      elements[i][1].classList.add("label-from-saved");
+      elements[i][1].innerHTML = elements[i][2].toString();
+      elements[i][0].appendChild(elements[i][1]);
 
-  // creates p to hold text input
-  const targetOutput = document.createElement("textarea");
-  targetOutput.id = "target-input";
-  targetOutput.name = "edit-input";
-  targetOutput.classList.add("text-output");
-  targetOutput.value = planToCreate.targets;
-  targetOutput.setAttribute("cols", "60");
-  targetOutput.setAttribute("rows", "5");
-  targetContainer.appendChild(targetOutput);
-  // TARGETS END
-
-  // SUCCESSES CONTAINER
-  // Creates container to hold label text and data got from local storage
-  const successContainer = document.createElement("div");
-  successContainer.classList.add("form-input");
-  plans.appendChild(successContainer);
-
-  // creates h3 to hold "label" text
-  const successText = document.createElement("h3");
-  successText.classList.add("label-from-saved");
-  successText.innerHTML = "Your Successes were: ";
-  successContainer.appendChild(successText);
-
-  // creates p to hold text input
-  const successOutput = document.createElement("textarea");
-  successOutput.id = "success-input";
-  successOutput.name = "edit-input";
-  successOutput.classList.add("text-output");
-  successOutput.value = planToCreate.successes;
-  successOutput.setAttribute("cols", "60");
-  successOutput.setAttribute("rows", "5");
-  successContainer.appendChild(successOutput);
-  // SUCCESS END
-
-  // FAILURES CONTAINER
-  // Creates container to hold label text and data got from local storage
-  const failuresContainer = document.createElement("div");
-  failuresContainer.classList.add("form-input");
-  plans.appendChild(failuresContainer);
-
-  // creates h3 to hold "label" text
-  const failuresText = document.createElement("h3");
-  failuresText.classList.add("label-from-saved");
-  failuresText.innerHTML = "Your Failures were: ";
-  failuresContainer.appendChild(failuresText);
-
-  // creates p to hold text input
-  const failuresOutput = document.createElement("textarea");
-  failuresOutput.id = "failure-input";
-  failuresOutput.name = "edit-input";
-  failuresOutput.classList.add("text-output");
-  failuresOutput.value = planToCreate.failures;
-  failuresOutput.setAttribute("cols", "60");
-  failuresOutput.setAttribute("rows", "5");
-  failuresContainer.appendChild(failuresOutput);
-  // FAILURES END
+      // creates textarea to hold text input
+      elements[i][3] = document.createElement("textarea");
+      elements[i][3].name = "edit-input";
+      elements[i][3].classList.add("text-output");
+      elements[i][3].value = planArray[i];
+      elements[i][3].setAttribute("cols", "60");
+      elements[i][3].setAttribute("rows", "5");
+      elements[i][0].appendChild(elements[i][3]);
+    }
+  }
 }
